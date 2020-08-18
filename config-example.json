@@ -1,0 +1,13 @@
+{
+  "paths": [
+    { "path": "", "description": "" },
+    { "path": "", "description": "" },
+    { "path": "", "description": "" }
+  ],
+  "exclude-patterns": [
+    { "pattern": "", "description": "" },
+    { "pattern": "", "description": "" },
+    { "pattern": "", "description": "" }
+  ],
+  "password": ""
+}
