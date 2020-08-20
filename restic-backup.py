@@ -5,8 +5,8 @@
 import json
 import sys
 
-if len(sys.argv) != 2:
-    print('usage: ')
+if len(sys.argv) != 3:
+    print(f'usage: {sys.argv[0]} <config-file> <command>')
     exit(-1)
 
 
