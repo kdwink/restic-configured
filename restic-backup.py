@@ -61,6 +61,8 @@ def main(config_file_path, command):
         execute_restic(config, ['snapshots'])
     elif command == 'check':
         execute_restic(config, ['check'])
+    elif command == 'stats':
+        execute_restic(config, ['stats', '--mode', 'raw-data'])
     elif command == 'backup':
         for backup_path in config['backup-paths']:
             current_path = backup_path['path']
