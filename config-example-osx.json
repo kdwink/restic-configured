@@ -4,7 +4,12 @@
   "backup-paths": [
     {
       "path": "/Users/keith/repos/git.redshiftsoft.com/apps",
-      "description": ""
+      "description": "",
+      "excludes": [
+        {
+          "pattern": "*.gz"
+        }
+      ]
     }
   ],
   "password": "abcd-1234-243fvf-ae3343"
