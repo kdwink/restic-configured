@@ -5,10 +5,16 @@
 import json
 import sys
 import subprocess
+import datetime
 
 if len(sys.argv) != 3:
     print(f'usage: {sys.argv[0]} <config-file> <command>')
     exit(-1)
+
+
+def banner(message):
+    timestamp = datetime.datetime.now().replace(microsecond=0).isoformat(' ')
+    print(f'{timestamp} ##################### {message}')
 
 
 def print_config(config):
@@ -38,12 +44,7 @@ def execute_restic(config, additional_args):
             "--repo", config['repository']
         ] + additional_args
     print(f'command: {c}')
-    result = subprocess.run(c, capture_output=False)
-    # restic --password-file "${P}" --repo "${R}" init;
-
-
-def banner(message):
-    print(f'############################ {message}')
+    subprocess.run(c, capture_output=False)
 
 
 def main(config_file_path, command):
@@ -65,6 +66,8 @@ def main(config_file_path, command):
             execute_restic(config, a)
     elif command == 'password':
         print(config['password'])
+        exit(0)
 
 
 main(sys.argv[1], sys.argv[2])
+banner("complete")
