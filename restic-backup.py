@@ -74,6 +74,12 @@ def main(config_file_path, command):
             exit(-1)
         execute_restic(config, ['ls', '--long', sys.argv[3]])
 
+    elif command == 'restore':
+        if len(sys.argv) != 4:
+            print(f"usage: {sys.argv[0]} [config-file] restore [snapshot|'latest'] [restore-path] [extract-to-path]")
+            exit(-1)
+        execute_restic(config, ['restore', sys.argv[3], '--path', sys.argv[3], '--target', sys.argv[5]])
+
     elif command == 'backup':
         for backup_path in config['backup-paths']:
             current_path = backup_path['path']
