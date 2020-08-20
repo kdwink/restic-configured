@@ -8,7 +8,7 @@ import os
 import subprocess
 import sys
 
-if len(sys.argv) < 3 or len(sys.argv) > 4:
+if len(sys.argv) < 3 or len(sys.argv) > 6:
     print(f'usage: {sys.argv[0]} <config-file> <command>')
     exit(-1)
 
@@ -90,10 +90,10 @@ def main(config_file_path, command):
         execute_restic(config, ['ls', '--long', sys.argv[3]])
 
     elif command == 'restore':
-        if len(sys.argv) != 4:
+        if len(sys.argv) != 6:
             print(f"usage: {sys.argv[0]} [config-file] restore [snapshot|'latest'] [restore-path] [extract-to-path]")
             exit(-1)
-        execute_restic(config, ['restore', sys.argv[3], '--path', sys.argv[3], '--target', sys.argv[5]])
+        execute_restic(config, ['restore', sys.argv[3], '--path', sys.argv[4], '--target', sys.argv[5]])
 
     elif command == 'backup':
         for backup_path in config['backup-paths']:
