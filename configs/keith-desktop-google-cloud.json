@@ -1,0 +1,14 @@
+{
+  "repository": "gs:keith-desktop:/",
+  "password": "***** DO NOT COMMIT *****",
+  "log-directory": "logs/keith-desktop-google-cloud",
+  "backup-paths": [
+    {
+      "path": "/home/keith/repos/git.redshiftsoft.com/documents/documents-home",
+      "excludes": [
+        { "pattern":  "**/.thumbnails/**" },
+        { "pattern":  "**/.git/**" }
+      ]
+    }
+  ]
+}
