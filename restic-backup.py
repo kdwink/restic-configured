@@ -37,14 +37,14 @@ def read_config(file):
 
 def execute_restic(config, additional_args):
     password_command = f"{sys.argv[0]} {sys.argv[1]} password"
-    c = [
+    args = [
             "restic",
             "--verbose",
             "--password-command", password_command,
             "--repo", config['repository']
         ] + additional_args
-    print(f'command: {c}')
-    subprocess.run(c, capture_output=False)
+    print(f'command: {" ".join(args)}')
+    subprocess.run(args, capture_output=False)
 
 
 def main(config_file_path, command):
