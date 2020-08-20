@@ -58,8 +58,8 @@ def execute_restic(config, additional_args):
     t = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     print(t.stdout)
 
-def main(config_file_path, command):
 
+def main(config_file_path, command):
     config = read_config(config_file_path)
 
     if command != 'password':
@@ -124,5 +124,6 @@ def main(config_file_path, command):
         exit(0)
 
     banner("complete")
+
 
 main(sys.argv[1], sys.argv[2])
