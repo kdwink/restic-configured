@@ -58,10 +58,12 @@ def execute_restic(config, additional_args):
 
 
 def main(config_file_path, command):
+
     config = read_config(config_file_path)
 
     if command != 'password':
         redirect_stdout(config)
+        banner("starting")
         print(f'configuration file path = {config_file_path}')
         print_config(config)
 
@@ -103,13 +105,13 @@ def main(config_file_path, command):
             execute_restic(config, a)
 
     elif command == 'password':
-        print(config['password'])
+        print(config['password'], end='')
         exit(0)
 
     else:
         print(f"BAD COMMAND: {command}")
         exit(0)
 
+    banner("complete")
 
 main(sys.argv[1], sys.argv[2])
-banner("complete")
