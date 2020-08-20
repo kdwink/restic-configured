@@ -57,6 +57,8 @@ def main(config_file_path, command):
         execute_restic(config, ['init'])
     elif command == 'unlock':
         execute_restic(config, ['unlock'])
+    elif command == 'snapshots':
+        execute_restic(config, ['snapshots'])
     elif command == 'backup':
         for backup_path in config['backup-paths']:
             current_path = backup_path['path']
