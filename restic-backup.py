@@ -54,7 +54,7 @@ def execute_restic(config, additional_args):
                "--password-command", password_command,
                "--repo", config['repository']
            ] + additional_args
-    print(f'command: {" ".join(args)}')
+    banner(f"command\n{' '.join(args)}\n")
     t = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     print(t.stdout)
 
