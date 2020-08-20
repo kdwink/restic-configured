@@ -10,5 +10,5 @@
     { "pattern": "bla/**/target", "description": "" },
     { "pattern": "/tmp/foo", "description": "" }
   ],
-  "password": ""
+  "password": "abcd-1234"
 }
