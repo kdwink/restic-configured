@@ -47,6 +47,9 @@
         },
         {
           "pattern": "**/.git"
+        },
+        {
+          "pattern": "**/node_modules"
         }
       ]
     }
