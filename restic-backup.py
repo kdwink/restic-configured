@@ -105,6 +105,16 @@ def main(config_file_path, command):
                     a = a + ['--exclude', exclude['pattern']]
             execute_restic(config, a)
 
+    elif command == 'prune':
+        banner("forget")
+        execute_restic(config, ['forget', '--keep-daily', '7', '--keep-weekly', '5', '--keep-monthly', '12'])
+        banner("prune")
+        execute_restic(config, ['--cleanup-cache', 'prune'])
+        banner("check")
+        execute_restic(config, ['check'])
+        banner("stats")
+        execute_restic(config, ['stats', '--mode', 'raw-data'])
+
     elif command == 'password':
         print(config['password'], end='')
         exit(0)
