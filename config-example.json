@@ -1,5 +1,6 @@
 {
   "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test",
+  "log-directory": "logs/test",
   "backup-paths": [
     {
       "path": "/home/keith/.ivy2",
@@ -17,7 +18,7 @@
       ]
     },
     {
-      "path": "/User/keith/repos/apps",
+      "path": "/Users/keith/repos/apps",
       "description": ""
     },
     {

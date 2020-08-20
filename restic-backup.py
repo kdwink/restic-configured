@@ -2,14 +2,24 @@
 # ==============================================================================
 #
 # ==============================================================================
-import json
-import sys
-import subprocess
 import datetime
+import json
+import os
+import subprocess
+import sys
 
 if len(sys.argv) < 3 or len(sys.argv) > 4:
     print(f'usage: {sys.argv[0]} <config-file> <command>')
     exit(-1)
+
+
+def redirect_stdout(config):
+    timestamp = datetime.datetime.now().replace(microsecond=0).isoformat('_')
+    log_dir = config['log-directory']
+    if not os.path.isdir(log_dir):
+        os.makedirs(log_dir)
+    log_file = f"{log_dir}/{timestamp}.log"
+    sys.stdout = open(log_file, 'w')
 
 
 def banner(message):
@@ -49,7 +59,9 @@ def execute_restic(config, additional_args):
 
 def main(config_file_path, command):
     config = read_config(config_file_path)
+
     if command != 'password':
+        redirect_stdout(config)
         print(f'configuration file path = {config_file_path}')
         print_config(config)
 
