@@ -1,0 +1,37 @@
+{
+  "repository": "/home/restic/restic-repos/dev",
+  "password": "***** DO NOT COMMIT *****",
+  "log-directory": "logs/test",
+  "backup-paths": [
+    {
+      "path": "/home"
+    },
+    {
+      "path": "/root"
+    },
+    {
+      "path": "/opt"
+    },
+    {
+      "path": "/etc"
+    },
+    {
+      "path": "/var/www",
+      "description": "static web content"
+    },
+    {
+      "path": "/var/opt/gitlab/backups"
+    },
+    {
+      "path": "/var/spool",
+      "description": "cron tabs"
+    },
+    {
+      "path": "/var/lib/docker/volumes/jenkins_home/_data",
+      "description": "jenkins docker volume"
+    },
+    {
+      "path": "/media/DRIVE_A"
+    }
+  ]
+}
