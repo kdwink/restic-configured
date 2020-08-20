@@ -1,14 +1,33 @@
 {
   "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test",
   "backup-paths": [
-    { "path": "/home/keith/.ivy2", "description": "" },
-    { "path": "/home/keith/.mysql", "description": "" },
-    { "path": "/home/keith/.local", "description": "" }
-  ],
-  "exclude-patterns": [
-    { "pattern": "*.cache", "description": "" },
-    { "pattern": "bla/**/target", "description": "" },
-    { "pattern": "/tmp/foo", "description": "" }
+    {
+      "path": "/home/keith/.ivy2",
+      "description": "",
+      "excludes": [
+        {
+          "pattern": "*.pdf"
+        },
+        {
+          "pattern": "*.odf"
+        },
+        {
+          "pattern": "**/**/target/*.jar"
+        }
+      ]
+    },
+    {
+      "path": "/home/keith/.mysql",
+      "description": ""
+    },
+    {
+      "path": "/home/keith/.local",
+      "description": "",
+      "excludes": [
+        {"pattern": "*.img"},
+        {"pattern": "*.thing"}
+      ]
+    }
   ],
   "password": "abcd-1234-243fvf"
 }

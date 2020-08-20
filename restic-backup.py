@@ -14,10 +14,11 @@ if len(sys.argv) != 3:
 def print_config(config):
     print("------------------------------------------------------")
     print(f"repository = {config['repository']}")
-    for path in config['backup-paths']:
-        print(f"path = {path['path']}")
-    for exclude in config['exclude-patterns']:
-        print(f"exclude = {exclude['pattern']}")
+    for backup_path in config['backup-paths']:
+        print(f"path = {backup_path['path']}")
+        if 'excludes' in backup_path:
+            for exclude in backup_path['excludes']:
+                print(f"\texclude = {exclude['pattern']}")
     print("------------------------------------------------------")
 
 
@@ -41,6 +42,10 @@ def execute_restic(config, additional_args):
     # restic --password-file "${P}" --repo "${R}" init;
 
 
+def banner(message):
+    print(f'############################ {message}')
+
+
 def main(config_file_path, command):
     config = read_config(config_file_path)
     if command != 'password':
@@ -51,7 +56,13 @@ def main(config_file_path, command):
         execute_restic(config, ['init'])
     elif command == 'backup':
         for backup_path in config['backup-paths']:
-            execute_restic(config, ["backup", "--one-file-system", backup_path['path']])
+            current_path = backup_path['path']
+            banner(f"backing up '{current_path}'")
+            a = ["backup", "--one-file-system", current_path]
+            if 'excludes' in backup_path:
+                for exclude in backup_path['excludes']:
+                    a = a + ['--exclude', exclude['pattern']]
+            execute_restic(config, a)
     elif command == 'password':
         print(config['password'])
 
