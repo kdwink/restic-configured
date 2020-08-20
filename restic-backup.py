@@ -26,17 +26,18 @@ def redirect_stdout(config):
 def banner(message):
     timestamp = datetime.datetime.now().replace(microsecond=0).isoformat(' ')
     print(f'{timestamp} ############# {message}')
+    sys.stdout.flush()
 
 
 def print_config(config):
-    print("------------------------------------------------------")
+    banner("configuration")
     print(f"repository = {config['repository']}")
     for backup_path in config['backup-paths']:
-        print(f"path = {backup_path['path']}")
+        print(f"\tpath = {backup_path['path']}")
         if 'excludes' in backup_path:
             for exclude in backup_path['excludes']:
-                print(f"\texclude = {exclude['pattern']}")
-    print("------------------------------------------------------")
+                print(f"\t\texclude = {exclude['pattern']}")
+    banner("")
 
 
 def read_config(file):
