@@ -28,9 +28,11 @@ def read_config(file):
         return json.loads(json_string)
 
 
-def execute_restic(config):
+def execute_restic(config, command):
     password_command = f"{sys.argv[0]} {sys.argv[1]} password"
-    c = ["restic", "--password-command", password_command, "--repo", config['repository'], 'init']
+    c = ["restic",
+         "--password-command", password_command,
+         "--repo", config['repository'], command]
     print(f'command: {c}')
     result = subprocess.run(c, capture_output=False)
     # restic --password-file "${P}" --repo "${R}" init;
@@ -44,7 +46,7 @@ def main(config_file_path, command):
 
     if command == 'init':
         print("init")
-        execute_restic(config)
+        execute_restic(config, command)
     elif command == 'password':
         print(config['password'])
 
