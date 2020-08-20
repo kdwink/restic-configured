@@ -1,5 +1,5 @@
 {
-  "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx-4",
+  "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx",
   "log-directory": "logs/test",
   "backup-paths": [
     {
@@ -8,9 +8,33 @@
       "excludes": [
         {
           "pattern": "*.gz"
+        },
+        {
+          "pattern": "*.war"
+        }
+      ]
+    },
+    {
+      "path": "/Users/keith/repos/git.redshiftsoft.com/examples",
+      "description": "",
+      "excludes": [
+        {
+          "pattern": "*.gz"
+        }
+      ]
+    },
+    {
+      "path": "/Users/keith/repos/git.redshiftsoft.com/libs",
+      "description": "",
+      "excludes": [
+        {
+          "pattern": "*.gz"
+        },
+        {
+          "pattern": "*.jar"
         }
       ]
     }
   ],
-  "password": "abcd-1234-243fvf-ae3343"
+  "password": "abc!d-1234-24^3fvf-ae*3343"
 }

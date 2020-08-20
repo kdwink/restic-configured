@@ -14,17 +14,18 @@ if len(sys.argv) < 3 or len(sys.argv) > 4:
 
 
 def redirect_stdout(config):
+    script_dir = os.path.dirname(os.path.realpath(__file__))
     timestamp = datetime.datetime.now().replace(microsecond=0).isoformat('_')
     log_dir = config['log-directory']
     if not os.path.isdir(log_dir):
         os.makedirs(log_dir)
-    log_file = f"{log_dir}/{timestamp}.log"
+    log_file = f"{script_dir}/{log_dir}/{timestamp}.log"
     sys.stdout = open(log_file, 'w')
 
 
 def banner(message):
     timestamp = datetime.datetime.now().replace(microsecond=0).isoformat(' ')
-    print(f'{timestamp} ##################### {message}')
+    print(f'{timestamp} ############# {message}')
 
 
 def print_config(config):
@@ -54,8 +55,8 @@ def execute_restic(config, additional_args):
                "--repo", config['repository']
            ] + additional_args
     print(f'command: {" ".join(args)}')
-    subprocess.run(args, capture_output=False)
-
+    t = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    print(t.stdout)
 
 def main(config_file_path, command):
 
