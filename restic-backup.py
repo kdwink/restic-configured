@@ -37,6 +37,11 @@ def print_config(config):
         if 'excludes' in backup_path:
             for exclude in backup_path['excludes']:
                 print(f"\t\texclude = {exclude['pattern']}")
+    env = config['environment']
+    if env is not None:
+        print("\tenvironment:")
+        for key, value in env.items():
+            print(f"\t\t{key} = {value}")
 
 
 def read_config(file):
@@ -55,7 +60,12 @@ def execute_restic(config, additional_args):
                "--repo", config['repository']
            ] + additional_args
     banner(f"command\n{' '.join(args)}\n")
-    t = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    t = subprocess.run(args,
+                       stdout=subprocess.PIPE,
+                       stderr=subprocess.STDOUT,
+                       text=True,
+                       env=config['environment']
+                       )
     print(t.stdout)
 
 

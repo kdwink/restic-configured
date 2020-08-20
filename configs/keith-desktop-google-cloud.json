@@ -2,6 +2,10 @@
   "repository": "gs:keith-desktop:/",
   "password": "***** DO NOT COMMIT *****",
   "log-directory": "logs/keith-desktop-google-cloud",
+  "environment": {
+      "GOOGLE_PROJECT_ID": "98450252583",
+      "GOOGLE_APPLICATION_CREDENTIALS": "/root/restic/google-cloud-auth.json"
+    },
   "backup-paths": [
     {
       "path": "/home/keith/repos/git.redshiftsoft.com/documents/documents-home",
