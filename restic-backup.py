@@ -24,8 +24,8 @@ def redirect_stdout(config):
 
 
 def banner(message):
-    timestamp = datetime.datetime.now().replace(microsecond=0).isoformat(' ')
-    print(f'{timestamp} ############# {message}')
+    timestamp = datetime.datetime.now().replace(microsecond=0).isoformat('_')
+    print(f'{timestamp} ********** {message}')
     sys.stdout.flush()
 
 
@@ -37,7 +37,6 @@ def print_config(config):
         if 'excludes' in backup_path:
             for exclude in backup_path['excludes']:
                 print(f"\t\texclude = {exclude['pattern']}")
-    banner("")
 
 
 def read_config(file):

@@ -34,6 +34,21 @@
           "pattern": "*.jar"
         }
       ]
+    },
+    {
+      "path": "/Users/keith/repos/github.com",
+      "description": "",
+      "excludes": [
+        {
+          "pattern": "*.gz"
+        },
+        {
+          "pattern": "*.jar"
+        },
+        {
+          "pattern": "**/.git"
+        }
+      ]
     }
   ],
   "password": "abc!d-1234-24^3fvf-ae*3343"
