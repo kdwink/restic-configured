@@ -7,6 +7,7 @@ import json
 import os
 import subprocess
 import sys
+import time
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -62,7 +63,7 @@ def execute_restic(config, additional_args):
                "--password-command", password_command,
                "--repo", config['repository']
            ] + additional_args
-    banner(f"command\n{' '.join(args)}\n")
+    banner(f"command\n\n{' '.join(args)}\n")
     t = subprocess.run(args,
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
@@ -73,6 +74,7 @@ def execute_restic(config, additional_args):
 
 
 def main(config_file_path, command):
+    start_time = time.perf_counter()
     config = read_config(config_file_path)
 
     if command == 'password':
@@ -139,7 +141,7 @@ def main(config_file_path, command):
         print(f"BAD COMMAND: {command}")
         exit(0)
 
-    banner("complete")
+    banner(f"COMPLETE in {time.perf_counter() - start_time} seconds.")
 
 
 main(sys.argv[1], sys.argv[2])
