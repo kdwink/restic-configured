@@ -1,6 +1,15 @@
 #!/usr/bin/env python3
 # ==============================================================================
+# Restic backup script.
 #
+# SETUP:
+#
+# apt-get install restic
+# brew install restic
+#
+# DOCS:
+#
+# https://restic.readthedocs.io/en/latest/
 # ==============================================================================
 import datetime
 import json
@@ -73,12 +82,10 @@ def execute_restic(config, additional_args):
     print(t.stdout)
 
 
-def command_check(config):
-    execute_restic(config, ['check'])
+def command_check(config): execute_restic(config, ['check'])
 
 
-def command_stats(config):
-    execute_restic(config, ['stats', '--mode', 'raw-data'])
+def command_stats(config):  execute_restic(config, ['stats', '--mode', 'raw-data'])
 
 
 def main(config_file_path, command):
