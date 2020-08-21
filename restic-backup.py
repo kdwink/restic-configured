@@ -102,9 +102,9 @@ def execute_restic(config, additional_args):
     password_command = f"{sys.argv[0]} {sys.argv[1]} password"
     args = [
                "restic",
+               "--repo", config['repository'],
                "--verbose",
-               "--password-command", password_command,
-               "--repo", config['repository']
+               "--password-command", password_command
            ] + additional_args
     banner(f"command\n\n{format_command(args)}\n")
     t = subprocess.run(args,
