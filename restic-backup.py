@@ -56,7 +56,7 @@ def format_command(command_part_array):
         if new_line:
             length = 0
             result = result + "\\\n\t"
-        result = result + part + " "
+        result = result + (part if ' ' not in part else f'"{part}"') + " "
         length = length + len(part)
     return result
 

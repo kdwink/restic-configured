@@ -7,6 +7,6 @@
 - [ ] Single execution from cron (does both backup and prune)
 - [ ] Prune settings are configurable per project in config json.
 - [ ] Auto cleanup/rotation of logs.
-- [ ] Ability to execute arbitrary restic commands.
+- [x] Ability to execute arbitrary restic commands.
 - [ ] Ability to execute arbitrary command for other repos.
 
