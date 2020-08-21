@@ -88,6 +88,13 @@ def command_check(config): execute_restic(config, ['check'])
 def command_stats(config):  execute_restic(config, ['stats', '--mode', 'raw-data'])
 
 
+def command_prune(config):
+    banner("forget")
+    execute_restic(config, ['forget', '--prune', '--keep-daily', '7', '--keep-weekly', '5', '--keep-monthly', '12'])
+    command_check(config)
+    command_stats(config)
+
+
 def main(config_file_path, command):
     start_time = time.perf_counter()
     config = read_config(config_file_path)
@@ -143,10 +150,7 @@ def main(config_file_path, command):
             execute_restic(config, a)
 
     elif command == 'prune':
-        banner("forget")
-        execute_restic(config, ['forget', '--prune', '--keep-daily', '7', '--keep-weekly', '5', '--keep-monthly', '12'])
-        command_check(config)
-        command_stats(config)
+        command_prune(config)
 
     else:
         print(f"BAD COMMAND: {command}")
