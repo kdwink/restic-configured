@@ -20,6 +20,13 @@ import time
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
+# --------------------------------------------------------------------
+#
+# general purpose functions
+#
+# --------------------------------------------------------------------
+
+
 if len(sys.argv) < 3 or len(sys.argv) > 6:
     print(f'usage: {sys.argv[0]} <config-file> <command>')
     exit(-1)
@@ -38,6 +45,13 @@ def banner(message):
     timestamp = datetime.datetime.now().replace(microsecond=0).isoformat('_')
     print(f'[{timestamp}] *************** {message}')
     sys.stdout.flush()
+
+
+# --------------------------------------------------------------------
+#
+# config
+#
+# --------------------------------------------------------------------
 
 
 def print_config(config):
@@ -63,6 +77,12 @@ def read_config(file):
         json_string = read_bytes.decode('utf-8')
         return json.loads(json_string)
 
+
+# --------------------------------------------------------------------
+#
+# command execution
+#
+# --------------------------------------------------------------------
 
 def execute_restic(config, additional_args):
     password_command = f"{sys.argv[0]} {sys.argv[1]} password"
@@ -95,6 +115,50 @@ def command_prune(config):
     command_stats(config)
 
 
+def command_ls(config):
+    if len(sys.argv) != 4:
+        print(f"usage: {sys.argv[0]} [config-file] ls [snapshot|'latest']")
+        exit(-1)
+    execute_restic(config, ['ls', '--long', sys.argv[3]])
+
+
+def command_restore(config):
+    if len(sys.argv) != 6:
+        print(f"usage: {sys.argv[0]} [config-file] restore [snapshot|'latest'] [restore-path] [extract-to-path]")
+        exit(-1)
+    execute_restic(config, ['restore', sys.argv[3], '--path', sys.argv[4], '--target', sys.argv[5]])
+
+
+def command_backup(config):
+    for backup_path in config['backup-paths']:
+        current_path = backup_path['path']
+        banner(f"backing up '{current_path}'")
+        a = ["backup", "--one-file-system", current_path]
+        if 'excludes' in backup_path:
+            for exclude in backup_path['excludes']:
+                a = a + ['--exclude', exclude['pattern']]
+        execute_restic(config, a)
+
+
+def command_snapshots(config):
+    execute_restic(config, ['snapshots'])
+
+
+def command_unlock(config):
+    execute_restic(config, ['unlock'])
+
+
+def command_init(config):
+    execute_restic(config, ['init'])
+
+
+# --------------------------------------------------------------------
+#
+# main
+#
+# --------------------------------------------------------------------
+
+
 def main(config_file_path, command):
     start_time = time.perf_counter()
     config = read_config(config_file_path)
@@ -113,45 +177,23 @@ def main(config_file_path, command):
     banner("starting")
 
     if command == 'init':
-        execute_restic(config, ['init'])
-
+        command_init(config)
     elif command == 'unlock':
-        execute_restic(config, ['unlock'])
-
+        command_unlock(config)
     elif command == 'snapshots':
-        execute_restic(config, ['snapshots'])
-
+        command_snapshots(config)
     elif command == 'check':
         command_check(config)
-
     elif command == 'stats':
         command_stats(config)
-
     elif command == 'ls':
-        if len(sys.argv) != 4:
-            print(f"usage: {sys.argv[0]} [config-file] ls [snapshot|'latest']")
-            exit(-1)
-        execute_restic(config, ['ls', '--long', sys.argv[3]])
-
+        command_ls(config)
     elif command == 'restore':
-        if len(sys.argv) != 6:
-            print(f"usage: {sys.argv[0]} [config-file] restore [snapshot|'latest'] [restore-path] [extract-to-path]")
-            exit(-1)
-        execute_restic(config, ['restore', sys.argv[3], '--path', sys.argv[4], '--target', sys.argv[5]])
-
+        command_restore(config)
     elif command == 'backup':
-        for backup_path in config['backup-paths']:
-            current_path = backup_path['path']
-            banner(f"backing up '{current_path}'")
-            a = ["backup", "--one-file-system", current_path]
-            if 'excludes' in backup_path:
-                for exclude in backup_path['excludes']:
-                    a = a + ['--exclude', exclude['pattern']]
-            execute_restic(config, a)
-
+        command_backup(config)
     elif command == 'prune':
         command_prune(config)
-
     else:
         print(f"BAD COMMAND: {command}")
         exit(0)
