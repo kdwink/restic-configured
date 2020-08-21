@@ -32,7 +32,8 @@ def banner(message):
 
 def print_config(config):
     banner("configuration")
-    print(f"repository = {config['repository']}")
+    print(f"repository    = {config['repository']}")
+    print(f"log-directory = {config['log-directory']}")
     for backup_path in config['backup-paths']:
         print(f"\tpath = {backup_path['path']}")
         if 'excludes' in backup_path:
@@ -83,9 +84,9 @@ def main(config_file_path, command):
     if command in redirect_commands:
         redirect_stdout(config)
 
-    banner("starting")
-    print(f'configuration file path = {config_file_path}')
     print_config(config)
+
+    banner("starting")
 
     if command == 'init':
         execute_restic(config, ['init'])
