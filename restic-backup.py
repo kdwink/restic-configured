@@ -51,7 +51,9 @@ def format_command(command_part_array):
     result = ""
     length = 0
     for part in command_part_array:
-        if length + len(part) > 40:
+        new_len = length + len(part)
+        new_line = (part.startswith("--") and (new_len > 40)) or (new_len > 80)
+        if new_line:
             length = 0
             result = result + "\\\n\t"
         result = result + part + " "
