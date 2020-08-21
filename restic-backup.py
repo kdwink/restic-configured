@@ -144,9 +144,7 @@ def main(config_file_path, command):
 
     elif command == 'prune':
         banner("forget")
-        execute_restic(config, ['forget', '--keep-daily', '7', '--keep-weekly', '5', '--keep-monthly', '12'])
-        banner("prune")
-        execute_restic(config, ['--cleanup-cache', 'prune'])
+        execute_restic(config, ['forget', '--prune', '--keep-daily', '7', '--keep-weekly', '5', '--keep-monthly', '12'])
         command_check(config)
         command_stats(config)
 
