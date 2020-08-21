@@ -141,7 +141,7 @@ def main(config_file_path, command):
         print(f"BAD COMMAND: {command}")
         exit(0)
 
-    banner(f"COMPLETE in {time.perf_counter() - start_time} seconds.")
+    banner(f"COMPLETE in {time.perf_counter() - start_time:.0f} seconds.")
 
 
 main(sys.argv[1], sys.argv[2])
