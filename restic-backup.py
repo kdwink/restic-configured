@@ -74,15 +74,18 @@ def execute_restic(config, additional_args):
 def main(config_file_path, command):
     config = read_config(config_file_path)
 
-    log_commands = ['backup', 'prune']
+    if command == 'password':
+        print(config['password'], end='')
+        exit(0)
 
-    if command in log_commands:
+    redirect_commands = ['backup', 'prune']
+
+    if command in redirect_commands:
         redirect_stdout(config)
 
-    if command != 'password':
-        banner("starting")
-        print(f'configuration file path = {config_file_path}')
-        print_config(config)
+    banner("starting")
+    print(f'configuration file path = {config_file_path}')
+    print_config(config)
 
     if command == 'init':
         execute_restic(config, ['init'])
@@ -130,10 +133,6 @@ def main(config_file_path, command):
         execute_restic(config, ['check'])
         banner("stats")
         execute_restic(config, ['stats', '--mode', 'raw-data'])
-
-    elif command == 'password':
-        print(config['password'], end='')
-        exit(0)
 
     else:
         print(f"BAD COMMAND: {command}")
