@@ -73,6 +73,14 @@ def execute_restic(config, additional_args):
     print(t.stdout)
 
 
+def command_check(config):
+    execute_restic(config, ['check'])
+
+
+def command_stats(config):
+    execute_restic(config, ['stats', '--mode', 'raw-data'])
+
+
 def main(config_file_path, command):
     start_time = time.perf_counter()
     config = read_config(config_file_path)
@@ -100,10 +108,10 @@ def main(config_file_path, command):
         execute_restic(config, ['snapshots'])
 
     elif command == 'check':
-        execute_restic(config, ['check'])
+        command_check(config)
 
     elif command == 'stats':
-        execute_restic(config, ['stats', '--mode', 'raw-data'])
+        command_stats(config)
 
     elif command == 'ls':
         if len(sys.argv) != 4:
@@ -132,10 +140,8 @@ def main(config_file_path, command):
         execute_restic(config, ['forget', '--keep-daily', '7', '--keep-weekly', '5', '--keep-monthly', '12'])
         banner("prune")
         execute_restic(config, ['--cleanup-cache', 'prune'])
-        banner("check")
-        execute_restic(config, ['check'])
-        banner("stats")
-        execute_restic(config, ['stats', '--mode', 'raw-data'])
+        command_check(config)
+        command_stats(config)
 
     else:
         print(f"BAD COMMAND: {command}")
