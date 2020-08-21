@@ -61,8 +61,9 @@ def print_config(config):
     for backup_path in config['backup-paths']:
         print(f"\tpath = {backup_path['path']}")
         if 'excludes' in backup_path:
-            for exclude in backup_path['excludes']:
-                print(f"\t\texclude = {exclude['pattern']}")
+            for e in backup_path['excludes']:
+                exclude = e if isinstance(e, str) else e['pattern']
+                print(f"\t\texclude = {exclude}")
     env = config.get('environment')
     if env is not None:
         print("\tenvironment:")
@@ -135,8 +136,9 @@ def command_backup(config):
         banner(f"backing up '{current_path}'")
         a = ["backup", "--one-file-system", current_path]
         if 'excludes' in backup_path:
-            for exclude in backup_path['excludes']:
-                a = a + ['--exclude', exclude['pattern']]
+            for e in backup_path['excludes']:
+                exclude = e if isinstance(e, str) else e['pattern']
+                a = a + ['--exclude', exclude]
         execute_restic(config, a)
 
 
