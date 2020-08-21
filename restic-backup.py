@@ -26,7 +26,7 @@ def redirect_stdout(config):
 
 def banner(message):
     timestamp = datetime.datetime.now().replace(microsecond=0).isoformat('_')
-    print(f'{timestamp} ********** {message}')
+    print(f'[{timestamp}] *************** {message}')
     sys.stdout.flush()
 
 
