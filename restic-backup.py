@@ -8,13 +8,14 @@ import os
 import subprocess
 import sys
 
+script_dir = os.path.dirname(os.path.realpath(__file__))
+
 if len(sys.argv) < 3 or len(sys.argv) > 6:
     print(f'usage: {sys.argv[0]} <config-file> <command>')
     exit(-1)
 
 
 def redirect_stdout(config):
-    script_dir = os.path.dirname(os.path.realpath(__file__))
     timestamp = datetime.datetime.now().replace(microsecond=0).isoformat('_')
     log_dir = config['log-directory']
     if not os.path.isdir(log_dir):
@@ -37,7 +38,7 @@ def print_config(config):
         if 'excludes' in backup_path:
             for exclude in backup_path['excludes']:
                 print(f"\t\texclude = {exclude['pattern']}")
-    env = config['environment']
+    env = config.get('environment')
     if env is not None:
         print("\tenvironment:")
         for key, value in env.items():
@@ -45,7 +46,8 @@ def print_config(config):
 
 
 def read_config(file):
-    with open(file, 'rb') as f:
+    f = file if os.path.isabs(file) else f"{script_dir}/{file}"
+    with open(f, 'rb') as f:
         read_bytes = f.read()
         json_string = read_bytes.decode('utf-8')
         return json.loads(json_string)
@@ -64,7 +66,7 @@ def execute_restic(config, additional_args):
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
                        text=True,
-                       env=config['environment']
+                       env=config.get('environment')
                        )
     print(t.stdout)
 
@@ -72,8 +74,12 @@ def execute_restic(config, additional_args):
 def main(config_file_path, command):
     config = read_config(config_file_path)
 
-    if command != 'password':
+    log_commands = ['backup', 'prune']
+
+    if command in log_commands:
         redirect_stdout(config)
+
+    if command != 'password':
         banner("starting")
         print(f'configuration file path = {config_file_path}')
         print_config(config)
