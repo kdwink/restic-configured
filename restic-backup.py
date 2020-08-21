@@ -47,6 +47,17 @@ def banner(message):
     sys.stdout.flush()
 
 
+def format_command(command_part_array):
+    result = ""
+    length = 0
+    for part in command_part_array:
+        if length + len(part) > 40:
+            length = 0
+            result = result + "\\\n\t"
+        result = result + part + " "
+        length = length + len(part)
+    return result
+
 # --------------------------------------------------------------------
 #
 # config
@@ -93,7 +104,7 @@ def execute_restic(config, additional_args):
                "--password-command", password_command,
                "--repo", config['repository']
            ] + additional_args
-    banner(f"command\n\n{' '.join(args)}\n")
+    banner(f"command\n\n{format_command(args)}\n")
     t = subprocess.run(args,
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
