@@ -1,4 +1,4 @@
-# restic-setup
+# restic-backup
 
 ## Improvements Over Bash
 
