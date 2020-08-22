@@ -7,6 +7,18 @@
 # apt-get install restic
 # brew install restic
 #
+# USAGE:
+#
+# INIT          : ./restic-backup.py config/example.json init
+# LIST SNAPSHOTS: ./restic-backup.py config/example.json snapshots
+# BACKUP        : ./restic-backup.py config/example.json backup
+# LIST FILES    : ./restic-backup.py config/example.json ls latest
+# CHECK         : ./restic-backup.py config/example.json check
+# STATS         : ./restic-backup.py config/example.json stats
+# PRUNE         : ./restic-backup.py config/example.json prune
+# RESTORE       : ./restic-backup.py config/example.json restore latest /etc /tmp/restored/etc
+# UNLOCK        : ./restic-backup.py config/example.json unlock
+#
 # DOCS:
 #
 # https://restic.readthedocs.io/en/latest/
