@@ -10,3 +10,14 @@
 - [x] Ability to execute arbitrary restic commands.
 - [ ] Ability to execute arbitrary command for other repos.
 
+
+
+## switch
+
+[ ] keith-desktop
+[ ] kdwink-mac
+[ ] dev
+[x] xiujia-pc
+[ ] forum01.supercharge.info
+[ ] super01.supercharge.info
+[ ] keithfabryorders.com 
