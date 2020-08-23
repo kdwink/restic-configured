@@ -21,3 +21,10 @@
 [ ] forum01.supercharge.info
 [ ] super01.supercharge.info
 [ ] keithfabryorders.com 
+
+
+## notes
+
+Forget and prune are separate commands to allow the use case where several machines might all sync to the same
+repository and only issue forget commands, possibly each with a unique policy, while a single machine, possibly
+close to the repository, issues the prune command.
