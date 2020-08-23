@@ -135,10 +135,11 @@ def command_stats(config):  execute_restic(config, ['stats', '--mode', 'raw-data
 
 
 def command_prune(config):
-    banner("forget")
-    execute_restic(config, ['forget', '--prune', '--keep-daily', '7', '--keep-weekly', '5', '--keep-monthly', '12'])
-    command_check(config)
-    command_stats(config)
+    execute_restic(config, ['prune'])
+
+
+def command_forget(config):
+    execute_restic(config, ['forget', '--keep-daily', '7', '--keep-weekly', '5', '--keep-monthly', '12'])
 
 
 def command_ls(config):
@@ -207,6 +208,8 @@ def main(config_file_path, command):
         command_init(config)
     elif command == 'unlock':
         command_unlock(config)
+    elif command == 'forget':
+        command_forget(config)
     elif command == 'snapshots':
         command_snapshots(config)
     elif command == 'check':
