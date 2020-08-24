@@ -83,6 +83,7 @@ def print_config(config):
     banner("configuration")
     print(f"repository    = {config['repository']}")
     print(f"log-directory = {config['log-directory']}")
+    print(f"forget-policy = {config['forget-policy']}")
     for backup_path in config['backup-paths']:
         print(f"\tpath = {backup_path['path']}")
         if 'excludes' in backup_path:
@@ -139,7 +140,8 @@ def command_prune(config):
 
 
 def command_forget(config):
-    execute_restic(config, ['forget', '--keep-daily', '7', '--keep-weekly', '5', '--keep-monthly', '12'])
+    forget_policy = config['forget-policy']
+    execute_restic(config, ['forget'] + forget_policy)
 
 
 def command_ls(config):
