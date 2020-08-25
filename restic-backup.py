@@ -86,6 +86,8 @@ def print_config(config):
     print(f"forget-policy = {config['forget-policy']}")
     for backup_path in config['backup-paths']:
         print(f"\tpath = {backup_path['path']}")
+        if 'forget-policy' in backup_path:
+            print(f"\t forget-policy={backup_path['forget-policy']}")
         if 'excludes' in backup_path:
             for e in backup_path['excludes']:
                 exclude = e if isinstance(e, str) else e['pattern']
@@ -140,8 +142,10 @@ def command_prune(config):
 
 
 def command_forget(config):
-    forget_policy = config['forget-policy']
-    execute_restic(config, ['forget'] + forget_policy)
+    global_forget_policy = config['forget-policy']
+    for backup_path in config['backup-paths']:
+        policy = global_forget_policy if 'forget-policy' not in backup_path else backup_path['forget-policy']
+        execute_restic(config, ['forget', '--path', backup_path['path']] + policy)
 
 
 def command_ls(config):
