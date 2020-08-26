@@ -16,7 +16,7 @@
 ## switch
 
 [ ] keith-desktop
-[ ] kdwink-mac
+[x] kdwink-mac
 [ ] dev
 [x] xiujia-pc
 [ ] forum01.supercharge.info
