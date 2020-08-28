@@ -1,0 +1,34 @@
+{
+  "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx",
+  "password": "abc!d-1234-24^3fvf-ae*3343",
+  "log-directory": "logs/example-osx",
+  "forget-policy": ["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"],
+  "backup-paths": [
+    {
+      "path": "/Users/keith/software",
+      "forget-policy": ["--keep-daily", "2"],
+      "excludes": [ ".DS_Store", "dbeaver" ]
+    },
+    {
+      "path": "/Users/keith/repos/git.redshiftsoft.com/apps",
+      "excludes": [  "*.gz",  "*.war", "**/node_modules" ]
+    },
+    {
+      "path": "/Users/keith/repos/git.redshiftsoft.com/examples",
+      "excludes": [ "*.gz" ]
+    },
+    {
+      "path": "/Users/keith/repos/git.redshiftsoft.com/libs",
+      "excludes": [ "*.gz", "*.jar" ]
+    },
+    {
+      "path": "/Users/keith/repos/github.com",
+      "excludes": [ "*.gz", "*.jar", "**/.git", "**/node_modules" ]
+    },
+    {
+      "path": "/Users/keith/repos/github.platforms.engineering",
+      "forget-policy": ["--keep-daily", "12"],
+      "excludes": [ "*.gz", "*.jar", "**/.git", "**/node_modules" ]
+    }
+  ]
+}
