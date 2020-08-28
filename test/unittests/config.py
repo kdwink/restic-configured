@@ -43,3 +43,7 @@ class ConfigTest(unittest.TestCase):
     def test_duplicate_path(self):
         with self.assertRaisesRegex(ValueError, "duplicate path value: '/foo/bar'"):
             read_config('unit-test-005.json')
+
+    def test_duplicate_exclude_pattern(self):
+        with self.assertRaisesRegex(ValueError, "duplicate exclude path: 'pattern2'"):
+            read_config('unit-test-006.json')

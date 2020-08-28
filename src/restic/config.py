@@ -34,6 +34,7 @@ class BackupPath:
         self.forget_policy = d.get('forget-policy')
         if 'excludes' in d:
             self.excludes = list(map(lambda x: Exclude(x), d.get('excludes')))
+            _check_for_duplicates(list(map(lambda x: x.pattern, self.excludes)),"duplicate exclude path")
         else:
             self.excludes = None
 
