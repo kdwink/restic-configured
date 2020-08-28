@@ -56,10 +56,10 @@ class ConfigTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unexpected type for exclude element: <class 'int'>"):
             read_config('unit-test-008.json')
 
-    def test_empty_list_forget_policy(self):
+    def test_empty_list_global_forget_policy(self):
         c = read_config('unit-test-009.json')
         self.assertIsNone(c.forget_policy)
 
-    def test_empty_list_forget_policy(self):
+    def test_missing_global_forget_policy(self):
         c = read_config('unit-test-010.json')
         self.assertIsNone(c.forget_policy)
