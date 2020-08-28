@@ -1,3 +1,6 @@
+#
+# image is here: https://hub.docker.com/_/python
+#
 image: python:3.8.3-slim
 
 before_script:
