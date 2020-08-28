@@ -54,4 +54,4 @@ class Exclude:
             self.pattern = d['pattern']
             self.description = d.get('description')
         else:
-            pass
+            raise ValueError("unexpected type for exclude element: " + str(type(d)))

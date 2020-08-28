@@ -51,3 +51,7 @@ class ConfigTest(unittest.TestCase):
     def test_missing_backup_paths(self):
         with self.assertRaisesRegex(ValueError, "no backup paths defined"):
             read_config('unit-test-007.json')
+
+    def test_invalid_type_in_excludes(self):
+        with self.assertRaisesRegex(ValueError, "unexpected type for exclude element: <class 'int'>"):
+            read_config('unit-test-008.json')

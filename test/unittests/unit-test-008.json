@@ -1,0 +1,19 @@
+{
+  "description": "INVALID: duplicate exclude pattern",
+  "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx",
+  "password": "8888",
+  "log-directory": "logs",
+  "backup-paths": [
+    {
+      "path": "/foo/bar/zebra",
+      "excludes": [
+        "pattern1",
+        { "pattern": "pattern2", "description": ""},
+        "pattern3",
+        "pattern4",
+        2000,
+        "pattern6"
+      ]
+    }
+  ]
+}
