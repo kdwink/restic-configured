@@ -29,13 +29,17 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual("dbeaver", c.backup_paths[0].excludes[1].pattern)
 
     def test_bad_property_in_top_level(self):
-        with self.assertRaisesRegex(ValueError, "invalid property: `foobar`"):
+        with self.assertRaisesRegex(ValueError, "invalid property: 'foobar'"):
             read_config('unit-test-002.json')
 
     def test_bad_property_in_backup_path_level(self):
-        with self.assertRaisesRegex(ValueError, "invalid property: `invalid-backup-path-prop`"):
+        with self.assertRaisesRegex(ValueError, "invalid property: 'invalid-backup-path-prop'"):
             read_config('unit-test-003.json')
 
     def test_bad_property_in_excludes_level(self):
-        with self.assertRaisesRegex(ValueError, "invalid property: `bad-exclude-prop`"):
+        with self.assertRaisesRegex(ValueError, "invalid property: 'bad-exclude-prop'"):
             read_config('unit-test-004.json')
+
+    def test_duplicate_path(self):
+        with self.assertRaisesRegex(ValueError, "duplicate path value: '/foo/bar'"):
+            read_config('unit-test-005.json')

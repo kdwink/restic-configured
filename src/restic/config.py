@@ -1,7 +1,13 @@
 def _check_props(d, props):
     for prop in d.keys():
         if prop not in props:
-            raise ValueError(f"invalid property: `{prop}`")
+            raise ValueError(f"invalid property: '{prop}'")
+
+
+def _check_for_duplicates(in_list, message):
+    for element in in_list:
+        if in_list.count(element) > 1:
+            raise ValueError(f"{message}: '{element}'")
 
 
 class Configuration:
@@ -16,6 +22,7 @@ class Configuration:
         # optional at this level
         self.forget_policy = d.get('forget-policy')
         self.backup_paths = list(map(lambda x: BackupPath(x), d['backup-paths']))
+        _check_for_duplicates(list(map(lambda x: x.path, self.backup_paths)),"duplicate path value")
 
 
 class BackupPath:
