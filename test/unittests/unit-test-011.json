@@ -1,0 +1,12 @@
+{
+  "description": "valid but with empty list global forget-policy",
+  "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx",
+  "password": "8888",
+  "log-directory": "logs",
+  "backup-paths": [
+    {
+      "path": "/foo/bar/zebra",
+      "forget-policy": []
+    }
+  ]
+}

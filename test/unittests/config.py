@@ -63,3 +63,11 @@ class ConfigTest(unittest.TestCase):
     def test_missing_global_forget_policy(self):
         c = read_config('unit-test-010.json')
         self.assertIsNone(c.forget_policy)
+
+    def test_empty_list_path_level_forget_policy(self):
+        c = read_config('unit-test-011.json')
+        self.assertIsNone(c.backup_paths[0].forget_policy)
+
+    def test_missing_path_level_forget_policy(self):
+        c = read_config('unit-test-012.json')
+        self.assertIsNone(c.backup_paths[0].forget_policy)
