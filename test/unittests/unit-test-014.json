@@ -1,0 +1,11 @@
+{
+  "description": "INVALID: empty repository",
+  "repository": "    ",
+  "password": "8888",
+  "log-directory": "logs",
+  "backup-paths": [
+    {
+      "path": "/foo/bar"
+    }
+  ]
+}

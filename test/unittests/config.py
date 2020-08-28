@@ -71,3 +71,15 @@ class ConfigTest(unittest.TestCase):
     def test_missing_path_level_forget_policy(self):
         c = read_config('unit-test-012.json')
         self.assertIsNone(c.backup_paths[0].forget_policy)
+
+    def test_invalid_empty_password(self):
+        with self.assertRaisesRegex(ValueError, "value for 'password' cannot be empty"):
+            read_config('unit-test-013.json')
+
+    def test_invalid_empty_repository(self):
+        with self.assertRaisesRegex(ValueError, "value for 'repository' cannot be empty"):
+            read_config('unit-test-014.json')
+
+    def test_invalid_empty_log_directory(self):
+        with self.assertRaisesRegex(ValueError, "value for 'log-directory' cannot be empty"):
+            read_config('unit-test-015.json')

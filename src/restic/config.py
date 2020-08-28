@@ -16,10 +16,19 @@ class Configuration:
 
     def __init__(self, d):
         _check_props(d, self.__valid_props)
-        self.repository = d['repository']
-        self.password = d['password']
-        self.log_directory = d['log-directory']
-        # optional at this level
+        # repository
+        self.repository = d['repository'].strip()
+        if len(self.repository) == 0:
+            raise ValueError("value for 'repository' cannot be empty")
+        # password
+        self.password = d['password'].strip()
+        if len(self.password) == 0:
+            raise ValueError("value for 'password' cannot be empty")
+        # log directory
+        self.log_directory = d['log-directory'].strip()
+        if len(self.log_directory) == 0:
+            raise ValueError("value for 'log-directory' cannot be empty")
+        # forget-policy: optional at this level
         self.forget_policy = d.get('forget-policy')
         if self.forget_policy is not None and len(self.forget_policy) == 0:
             self.forget_policy = None
