@@ -21,11 +21,13 @@ class Configuration:
         self.log_directory = d['log-directory']
         # optional at this level
         self.forget_policy = d.get('forget-policy')
+        if self.forget_policy is not None and len(self.forget_policy) == 0:
+            self.forget_policy = None
         # backup paths
         paths_ = d['backup-paths']
         if len(paths_) < 1: raise ValueError("no backup paths defined")
         self.backup_paths = list(map(lambda x: BackupPath(x), paths_))
-        _check_for_duplicates(list(map(lambda x: x.path, self.backup_paths)),"duplicate path value")
+        _check_for_duplicates(list(map(lambda x: x.path, self.backup_paths)), "duplicate path value")
 
 
 class BackupPath:
@@ -37,7 +39,7 @@ class BackupPath:
         self.forget_policy = d.get('forget-policy')
         if 'excludes' in d:
             self.excludes = list(map(lambda x: Exclude(x), d.get('excludes')))
-            _check_for_duplicates(list(map(lambda x: x.pattern, self.excludes)),"duplicate exclude path")
+            _check_for_duplicates(list(map(lambda x: x.pattern, self.excludes)), "duplicate exclude path")
         else:
             self.excludes = None
 
