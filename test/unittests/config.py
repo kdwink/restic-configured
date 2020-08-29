@@ -6,7 +6,8 @@ import os
 
 def read_config_json(file):
     src_dir = os.path.dirname(os.path.abspath(__file__))
-    with open(f"{src_dir}/{file}", 'rb') as f:
+    f = file if os.path.isabs(file) else f"{src_dir}/{file}"
+    with open(f, 'rb') as f:
         read_bytes = f.read()
         json_string = read_bytes.decode('utf-8')
         return json.loads(json_string)
@@ -27,6 +28,19 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual(6, len(c.backup_paths))
         self.assertEqual(".DS_Store", c.backup_paths[0].excludes[0].pattern)
         self.assertEqual("dbeaver", c.backup_paths[0].excludes[1].pattern)
+
+    def test_all_real_configs_valid(self):
+        src_dir = os.path.dirname(os.path.abspath(__file__))
+        config_dir = f"{src_dir}/../../config/"
+        print("config_dir=" + config_dir)
+        self.assertTrue(os.path.isdir(config_dir))
+        for root, dirs, files in os.walk(config_dir):
+            for file in files:
+                target = os.path.join(root, file)
+                print("root   = " + root)
+                print("file   = " + file)
+                print("target = " + target)
+                read_config(target)
 
     def test_bad_property_in_top_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'foobar'"):

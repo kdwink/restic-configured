@@ -11,7 +11,7 @@ def _check_for_duplicates(in_list, message):
 
 
 class Configuration:
-    __valid_props = ["backup-paths", "description", "forget-policy",
+    __valid_props = ["backup-paths", "description", "environment", "forget-policy",
                      "log-directory", "password", "repository"]
 
     def __init__(self, d):
