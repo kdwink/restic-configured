@@ -20,6 +20,8 @@ class Configuration:
         self.repository = d['repository'].strip()
         if len(self.repository) == 0:
             raise ValueError("value for 'repository' cannot be empty")
+        # environment
+        self.environment = d.get('environment')
         # password
         self.password = d['password'].strip()
         if len(self.password) == 0:

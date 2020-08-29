@@ -20,7 +20,7 @@ def read_config(file):
 
 class ConfigTest(unittest.TestCase):
 
-    def test_config(self):
+    def test_one_good_config(self):
         c = read_config('configs/unit-test-001.json')
         self.assertEqual('sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx', c.repository)
         self.assertEqual('logs/example-osx', c.log_directory)
@@ -32,15 +32,13 @@ class ConfigTest(unittest.TestCase):
     def test_all_real_configs_valid(self):
         src_dir = os.path.dirname(os.path.abspath(__file__))
         config_dir = f"{src_dir}/../../config/"
-        print("config_dir=" + config_dir)
         self.assertTrue(os.path.isdir(config_dir))
+        config_count = 0
         for root, dirs, files in os.walk(config_dir):
             for file in files:
-                target = os.path.join(root, file)
-                print("root   = " + root)
-                print("file   = " + file)
-                print("target = " + target)
-                read_config(target)
+                read_config(os.path.join(root, file))
+                config_count = config_count + 1
+        self.assertTrue(config_count > 8)
 
     def test_bad_property_in_top_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'foobar'"):
