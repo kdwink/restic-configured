@@ -26,6 +26,12 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual('logs/example-osx', c.log_directory)
         self.assertEqual('abc!d-1234-24^3fvf-ae*3343', c.password)
         self.assertEqual(["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"], c.forget_policy)
+        env = c.environment
+        self.assertTrue(isinstance(env, dict))
+        self.assertTrue(len(env) == 3)
+        self.assertEqual('value1', env['key1'])
+        self.assertEqual('value2', env['key2'])
+        self.assertEqual('value3', env['key3'])
         self.assertEqual(6, len(c.backup_paths))
         self.assertEqual(".DS_Store", c.backup_paths[0].excludes[0].pattern)
         self.assertEqual("dbeaver", c.backup_paths[0].excludes[1].pattern)
