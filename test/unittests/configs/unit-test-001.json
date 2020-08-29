@@ -2,6 +2,9 @@
   "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx",
   "password": "abc!d-1234-24^3fvf-ae*3343",
   "log-directory": "logs/example-osx",
+  "environment": {
+      "key1": "value1", "key2": "value2", "key3": "value3"
+  },
   "forget-policy": ["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"],
   "backup-paths": [
     {
