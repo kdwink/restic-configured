@@ -20,7 +20,7 @@ def read_config(file):
 class ConfigTest(unittest.TestCase):
 
     def test_config(self):
-        c = read_config('unit-test-001.json')
+        c = read_config('configs/unit-test-001.json')
         self.assertEqual('sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx', c.repository)
         self.assertEqual('logs/example-osx', c.log_directory)
         self.assertEqual(["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"], c.forget_policy)
@@ -30,60 +30,60 @@ class ConfigTest(unittest.TestCase):
 
     def test_bad_property_in_top_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'foobar'"):
-            read_config('unit-test-002.json')
+            read_config('configs/unit-test-002.json')
 
     def test_bad_property_in_backup_path_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'invalid-backup-path-prop'"):
-            read_config('unit-test-003.json')
+            read_config('configs/unit-test-003.json')
 
     def test_bad_property_in_excludes_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'bad-exclude-prop'"):
-            read_config('unit-test-004.json')
+            read_config('configs/unit-test-004.json')
 
     def test_duplicate_path(self):
         with self.assertRaisesRegex(ValueError, "duplicate path value: '/foo/bar'"):
-            read_config('unit-test-005.json')
+            read_config('configs/unit-test-005.json')
 
     def test_duplicate_exclude_pattern(self):
         with self.assertRaisesRegex(ValueError, "duplicate exclude path: 'pattern2'"):
-            read_config('unit-test-006.json')
+            read_config('configs/unit-test-006.json')
 
     def test_missing_backup_paths(self):
         with self.assertRaisesRegex(ValueError, "no backup paths defined"):
-            read_config('unit-test-007.json')
+            read_config('configs/unit-test-007.json')
 
     def test_invalid_type_in_excludes(self):
         with self.assertRaisesRegex(ValueError, "unexpected type for exclude element: <class 'int'>"):
-            read_config('unit-test-008.json')
+            read_config('configs/unit-test-008.json')
 
     def test_empty_list_global_forget_policy(self):
-        c = read_config('unit-test-009.json')
+        c = read_config('configs/unit-test-009.json')
         self.assertIsNone(c.forget_policy)
 
     def test_missing_global_forget_policy(self):
-        c = read_config('unit-test-010.json')
+        c = read_config('configs/unit-test-010.json')
         self.assertIsNone(c.forget_policy)
 
     def test_empty_list_path_level_forget_policy(self):
-        c = read_config('unit-test-011.json')
+        c = read_config('configs/unit-test-011.json')
         self.assertIsNone(c.backup_paths[0].forget_policy)
 
     def test_missing_path_level_forget_policy(self):
-        c = read_config('unit-test-012.json')
+        c = read_config('configs/unit-test-012.json')
         self.assertIsNone(c.backup_paths[0].forget_policy)
 
     def test_invalid_empty_password(self):
         with self.assertRaisesRegex(ValueError, "value for 'password' cannot be empty"):
-            read_config('unit-test-013.json')
+            read_config('configs/unit-test-013.json')
 
     def test_invalid_empty_repository(self):
         with self.assertRaisesRegex(ValueError, "value for 'repository' cannot be empty"):
-            read_config('unit-test-014.json')
+            read_config('configs/unit-test-014.json')
 
     def test_invalid_empty_log_directory(self):
         with self.assertRaisesRegex(ValueError, "value for 'log-directory' cannot be empty"):
-            read_config('unit-test-015.json')
+            read_config('configs/unit-test-015.json')
 
     def test_invalid_empty_exclude_pattern(self):
         with self.assertRaisesRegex(ValueError, "exclude pattern can not be empty"):
-            read_config('unit-test-016.json')
+            read_config('configs/unit-test-016.json')
