@@ -1,13 +1,12 @@
-def _check_props(d, props):
-    for prop in d.keys():
-        if prop not in props:
-            raise ValueError(f"invalid property: '{prop}'")
+import os
+import json
 
 
-def _check_for_duplicates(in_list, message):
-    for element in in_list:
-        if in_list.count(element) > 1:
-            raise ValueError(f"{message}: '{element}'")
+# --------------------------------------------------------------------
+#
+# classes
+#
+# --------------------------------------------------------------------
 
 
 class Configuration:
@@ -42,6 +41,9 @@ class Configuration:
         self.backup_paths = list(map(lambda x: BackupPath(x), paths_))
         _check_for_duplicates(list(map(lambda x: x.path, self.backup_paths)), "duplicate path value")
 
+    def has_environment(self):
+        return self.environment is not None
+
 
 class BackupPath:
     __valid_props = ["description", "excludes", "forget-policy", "path"]
@@ -57,6 +59,12 @@ class BackupPath:
             _check_for_duplicates(list(map(lambda x: x.pattern, self.excludes)), "duplicate exclude path")
         else:
             self.excludes = None
+
+    def has_excludes(self):
+        return self.excludes is not None
+
+    def has_forgets(self):
+        return self.forget_policy is not None
 
 
 class Exclude:
@@ -74,3 +82,59 @@ class Exclude:
             raise ValueError("unexpected type for exclude element: " + str(type(d)))
         if len(self.pattern) == 0:
             raise ValueError("exclude pattern can not be empty")
+
+
+# --------------------------------------------------------------------
+#
+# functions
+#
+# --------------------------------------------------------------------
+
+
+def print_config(config: Configuration):
+    # banner("configuration")
+    print(f"repository    = {config.repository}")
+    print(f"log-directory = {config.log_directory}")
+    print(f"forget-policy = {config.forget_policy}")
+    for backup_path in config.backup_paths:
+        print(f"\tpath = {backup_path.path}")
+        if backup_path.has_forgets():
+            print(f"\t\tforget-policy={backup_path.forget_policy}")
+        if backup_path.has_excludes():
+            for e in backup_path.excludes:
+                print(f"\t\texclude = {e.pattern}")
+    if config.has_environment():
+        print("\tenvironment:")
+        for key, value in config.environment.items():
+            print(f"\t\t{key} = {value}")
+
+
+def read_config(file):
+    return Configuration(_read_config_json(file))
+
+
+# --------------------------------------------------------------------
+#
+# private functions
+#
+# --------------------------------------------------------------------
+
+def _read_config_json(file):
+    src_dir = os.path.dirname(os.path.abspath(__file__))
+    f = file if os.path.isabs(file) else f"{src_dir}/{file}"
+    with open(f, 'rb') as f:
+        read_bytes = f.read()
+        json_string = read_bytes.decode('utf-8')
+        return json.loads(json_string)
+
+
+def _check_props(d, props):
+    for prop in d.keys():
+        if prop not in props:
+            raise ValueError(f"invalid property: '{prop}'")
+
+
+def _check_for_duplicates(in_list, message):
+    for element in in_list:
+        if in_list.count(element) > 1:
+            raise ValueError(f"{message}: '{element}'")

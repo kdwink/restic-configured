@@ -2,7 +2,7 @@
 
 ## Improvements
 
-- [ ] Validate config file. Assert required fields and error on unrecognized fields.
+- [x] Validate config file. Assert required fields and error on unrecognized fields.
 - [ ] Make redirect of output optional command line arg.
 - [ ] Single execution from cron (does both backup and forget and/or prune)
 - [ ] Auto cleanup/rotation of logs.

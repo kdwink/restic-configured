@@ -24,11 +24,11 @@
 # https://restic.readthedocs.io/en/latest/
 # ==============================================================================
 import datetime
-import json
 import os
 import subprocess
 import sys
 import time
+import config as conf
 
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
@@ -46,7 +46,7 @@ if len(sys.argv) < 3 or len(sys.argv) > 6:
 
 def redirect_stdout(config):
     timestamp = datetime.datetime.now().replace(microsecond=0).isoformat('_')
-    log_dir = config['log-directory']
+    log_dir = config.log_directory
     if not os.path.isdir(log_dir):
         os.makedirs(log_dir)
     log_file = f"{script_dir}/{log_dir}/{timestamp}.log"
@@ -76,40 +76,6 @@ def format_command(command_part_array):
         last_part = part
     return result
 
-# --------------------------------------------------------------------
-#
-# config
-#
-# --------------------------------------------------------------------
-
-
-def print_config(config):
-    banner("configuration")
-    print(f"repository    = {config['repository']}")
-    print(f"log-directory = {config['log-directory']}")
-    print(f"forget-policy = {config['forget-policy']}")
-    for backup_path in config['backup-paths']:
-        print(f"\tpath = {backup_path['path']}")
-        if 'forget-policy' in backup_path:
-            print(f"\t forget-policy={backup_path['forget-policy']}")
-        if 'excludes' in backup_path:
-            for e in backup_path['excludes']:
-                exclude = e if isinstance(e, str) else e['pattern']
-                print(f"\t\texclude = {exclude}")
-    env = config.get('environment')
-    if env is not None:
-        print("\tenvironment:")
-        for key, value in env.items():
-            print(f"\t\t{key} = {value}")
-
-
-def read_config(file):
-    f = file if os.path.isabs(file) else f"{script_dir}/{file}"
-    with open(f, 'rb') as f:
-        read_bytes = f.read()
-        json_string = read_bytes.decode('utf-8')
-        return json.loads(json_string)
-
 
 # --------------------------------------------------------------------
 #
@@ -121,7 +87,7 @@ def execute_restic(config, additional_args):
     password_command = f"{sys.argv[0]} {sys.argv[1]} password"
     args = [
                "restic",
-               "--repo", config['repository'],
+               "--repo", config.repository,
                "--verbose",
                "--password-command", password_command
            ] + additional_args
@@ -130,7 +96,7 @@ def execute_restic(config, additional_args):
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
                        text=True,
-                       env=config.get('environment')
+                       env=config.environment
                        )
     print(t.stdout)
 
@@ -146,10 +112,9 @@ def command_prune(config):
 
 
 def command_forget(config):
-    global_forget_policy = config['forget-policy']
-    for backup_path in config['backup-paths']:
-        policy = global_forget_policy if 'forget-policy' not in backup_path else backup_path['forget-policy']
-        execute_restic(config, ['forget', '--path', backup_path['path']] + policy)
+    for backup_path in config.backup_paths:
+        policy = config.forget_policy if not backup_path.has_forgets() else backup_path.forget_policy
+        execute_restic(config, ['forget', '--path', backup_path.path] + policy)
 
 
 def command_ls(config):
@@ -167,14 +132,12 @@ def command_restore(config):
 
 
 def command_backup(config):
-    for backup_path in config['backup-paths']:
-        current_path = backup_path['path']
-        banner(f"backing up '{current_path}'")
-        a = ["backup", "--one-file-system", current_path]
-        if 'excludes' in backup_path:
-            for e in backup_path['excludes']:
-                exclude = e if isinstance(e, str) else e['pattern']
-                a = a + ['--exclude', exclude]
+    for backup_path in config.backup_paths:
+        banner(f"backing up '{backup_path.path}'")
+        a = ["backup", "--one-file-system", backup_path.path]
+        if backup_path.has_excludes():
+            for e in backup_path.excludes:
+                a = a + ['--exclude', e.pattern]
         execute_restic(config, a)
 
 
@@ -199,10 +162,10 @@ def command_init(config):
 
 def main(config_file_path, command):
     start_time = time.perf_counter()
-    config = read_config(config_file_path)
+    config = conf.read_config(config_file_path)
 
     if command == 'password':
-        print(config['password'], end='')
+        print(config.password, end='')
         exit(0)
 
     redirect_commands = ['backup', 'prune']
@@ -210,7 +173,7 @@ def main(config_file_path, command):
     if command in redirect_commands:
         redirect_stdout(config)
 
-    print_config(config)
+    conf.print_config(config)
 
     banner("starting")
 
