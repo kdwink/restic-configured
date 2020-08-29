@@ -106,3 +106,7 @@ class ConfigTest(unittest.TestCase):
     def test_invalid_empty_exclude_pattern(self):
         with self.assertRaisesRegex(ValueError, "exclude pattern can not be empty"):
             read_config('configs/unit-test-016.json')
+
+    def test_invalid_environment_type(self):
+        with self.assertRaisesRegex(ValueError, "environment must have keys and values"):
+            read_config('configs/unit-test-017.json')

@@ -22,6 +22,8 @@ class Configuration:
             raise ValueError("value for 'repository' cannot be empty")
         # environment
         self.environment = d.get('environment')
+        if self.environment is not None and not isinstance(self.environment, dict):
+            raise ValueError("environment must have keys and values")
         # password
         self.password = d['password'].strip()
         if len(self.password) == 0:
