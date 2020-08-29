@@ -60,11 +60,13 @@ class Exclude:
 
     def __init__(self, d):
         if isinstance(d, str):
-            self.pattern = d
+            self.pattern = d.strip()
             self.description = None
         elif isinstance(d, dict):
             _check_props(d, self.__valid_props)
-            self.pattern = d['pattern']
+            self.pattern = d['pattern'].strip()
             self.description = d.get('description')
         else:
             raise ValueError("unexpected type for exclude element: " + str(type(d)))
+        if len(self.pattern) == 0:
+            raise ValueError("exclude pattern can not be empty")

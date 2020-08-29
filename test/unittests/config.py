@@ -83,3 +83,7 @@ class ConfigTest(unittest.TestCase):
     def test_invalid_empty_log_directory(self):
         with self.assertRaisesRegex(ValueError, "value for 'log-directory' cannot be empty"):
             read_config('unit-test-015.json')
+
+    def test_invalid_empty_exclude_pattern(self):
+        with self.assertRaisesRegex(ValueError, "exclude pattern can not be empty"):
+            read_config('unit-test-016.json')
