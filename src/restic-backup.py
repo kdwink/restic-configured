@@ -24,53 +24,13 @@
 # https://restic.readthedocs.io/en/latest/
 # ==============================================================================
 import argparse
-import datetime
 import os
 import random
 import subprocess
 import sys
 import time
-import config as conf
-
-
-# --------------------------------------------------------------------
-# general purpose functions
-#
-# --------------------------------------------------------------------
-
-
-def redirect_stdout(config):
-    timestamp = datetime.datetime.now().replace(microsecond=0).isoformat('_')
-    log_dir = config.log_directory
-    if not os.path.isdir(log_dir):
-        os.makedirs(log_dir)
-    script_dir = os.path.dirname(os.path.realpath(__file__))
-    log_file = f"{script_dir}/{log_dir}/{timestamp}.log"
-    sys.stdout = open(log_file, 'w')
-
-
-def banner(message):
-    timestamp = datetime.datetime.now().replace(microsecond=0).isoformat('_')
-    print(f'[{timestamp}] *************** {message}')
-    sys.stdout.flush()
-
-
-def format_command(command_part_array):
-    result = ""
-    length = 0
-    last_part = ""
-    for part in command_part_array:
-        new_len = length + len(part)
-        new_line = (part.startswith("--") and (new_len > 40)) or (new_len > 80)
-        if new_line:
-            length = 0
-            result = result + "\\\n\t"
-        should_quote_part = (' ' in part or last_part == '--exclude')
-        result = result + (part if not should_quote_part else f'"{part}"')
-        result = result + " "
-        length = length + len(part)
-        last_part = part
-    return result
+from restic.config import read_config, print_config
+from restic.logging import banner, redirect_stdout, format_command
 
 
 # --------------------------------------------------------------------
@@ -202,14 +162,15 @@ def main():
         print(f"BAD sub-command: '{args.sub_command[0]}'")
         sys.exit(-1)
 
-    config = conf.read_config(args.config_file)
+    src_dir = os.path.dirname(os.path.abspath(__file__))
+    config = read_config(args.config_file, src_dir)
 
     if args.log:
-        redirect_stdout(config)
+        redirect_stdout(config, src_dir)
 
     if args.sub_command[0] != 'password':
         banner("config")
-        conf.print_config(config)
+        print_config(config)
         banner("starting")
 
     valid_commands[args.sub_command[0]](config, args)

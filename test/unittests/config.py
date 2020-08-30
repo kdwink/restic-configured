@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from config import read_config
+from restic.config import read_config
 
 src_dir = os.path.dirname(os.path.abspath(__file__))
 test_file_dir = f"{src_dir}/configs"
@@ -10,7 +10,7 @@ test_file_dir = f"{src_dir}/configs"
 class ConfigTest(unittest.TestCase):
 
     def test_one_good_config(self):
-        c = read_config(f'{test_file_dir}/unit-test-001.json')
+        c = read_config(f'{test_file_dir}/unit-test-001.json', None)
         self.assertEqual('sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx', c.repository)
         self.assertEqual('logs/example-osx', c.log_directory)
         self.assertEqual('abc!d-1234-24^3fvf-ae*3343', c.password)
@@ -32,82 +32,82 @@ class ConfigTest(unittest.TestCase):
         config_count = 0
         for root, dirs, files in os.walk(config_dir):
             for file in files:
-                read_config(os.path.join(root, file))
+                read_config(os.path.join(root, file), None)
                 config_count = config_count + 1
         self.assertTrue(config_count > 8)
 
     def test_bad_property_in_top_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'foobar'"):
-            read_config(f'{test_file_dir}/unit-test-002.json')
+            read_config(f'{test_file_dir}/unit-test-002.json', None)
 
     def test_bad_property_in_backup_path_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'invalid-backup-path-prop'"):
-            read_config(f'{test_file_dir}/unit-test-003.json')
+            read_config(f'{test_file_dir}/unit-test-003.json', None)
 
     def test_bad_property_in_excludes_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'bad-exclude-prop'"):
-            read_config(f'{test_file_dir}/unit-test-004.json')
+            read_config(f'{test_file_dir}/unit-test-004.json', None)
 
     def test_duplicate_path(self):
         with self.assertRaisesRegex(ValueError, "duplicate path value: '/foo/bar'"):
-            read_config(f'{test_file_dir}/unit-test-005.json')
+            read_config(f'{test_file_dir}/unit-test-005.json', None)
 
     def test_duplicate_exclude_pattern(self):
         with self.assertRaisesRegex(ValueError, "duplicate exclude path: 'pattern2'"):
-            read_config(f'{test_file_dir}/unit-test-006.json')
+            read_config(f'{test_file_dir}/unit-test-006.json', None)
 
     def test_missing_backup_paths(self):
         with self.assertRaisesRegex(ValueError, "no backup paths defined"):
-            read_config(f'{test_file_dir}/unit-test-007.json')
+            read_config(f'{test_file_dir}/unit-test-007.json', None)
 
     def test_invalid_type_in_excludes(self):
         with self.assertRaisesRegex(ValueError, "unexpected type for exclude element: <class 'int'>"):
-            read_config(f'{test_file_dir}/unit-test-008.json')
+            read_config(f'{test_file_dir}/unit-test-008.json', None)
 
     def test_empty_list_global_forget_policy(self):
-        c = read_config(f'{test_file_dir}/unit-test-009.json')
+        c = read_config(f'{test_file_dir}/unit-test-009.json', None)
         self.assertIsNone(c.forget_policy)
 
     def test_missing_global_forget_policy(self):
-        c = read_config(f'{test_file_dir}/unit-test-010.json')
+        c = read_config(f'{test_file_dir}/unit-test-010.json', None)
         self.assertIsNone(c.forget_policy)
 
     def test_empty_list_path_level_forget_policy(self):
-        c = read_config(f'{test_file_dir}/unit-test-011.json')
+        c = read_config(f'{test_file_dir}/unit-test-011.json', None)
         self.assertIsNone(c.backup_paths[0].forget_policy)
 
     def test_missing_path_level_forget_policy(self):
-        c = read_config(f'{test_file_dir}/unit-test-012.json')
+        c = read_config(f'{test_file_dir}/unit-test-012.json', None)
         self.assertIsNone(c.backup_paths[0].forget_policy)
 
     def test_invalid_empty_password(self):
         with self.assertRaisesRegex(ValueError, "value for 'password' cannot be empty"):
-            read_config(f'{test_file_dir}/unit-test-013.json')
+            read_config(f'{test_file_dir}/unit-test-013.json', None)
 
     def test_invalid_empty_repository(self):
         with self.assertRaisesRegex(ValueError, "value for 'repository' cannot be empty"):
-            read_config(f'{test_file_dir}/unit-test-014.json')
+            read_config(f'{test_file_dir}/unit-test-014.json', None)
 
     def test_invalid_empty_log_directory(self):
         with self.assertRaisesRegex(ValueError, "value for 'log-directory' cannot be empty"):
-            read_config(f'{test_file_dir}/unit-test-015.json')
+            read_config(f'{test_file_dir}/unit-test-015.json', None)
 
     def test_invalid_empty_exclude_pattern(self):
         with self.assertRaisesRegex(ValueError, "exclude pattern can not be empty"):
-            read_config(f'{test_file_dir}/unit-test-016.json')
+            read_config(f'{test_file_dir}/unit-test-016.json', None)
 
     def test_invalid_environment_type(self):
         with self.assertRaisesRegex(ValueError, "environment must have keys and values"):
-            read_config(f'{test_file_dir}/unit-test-017.json')
+            read_config(f'{test_file_dir}/unit-test-017.json', None)
 
     def test_default_prune_policy(self):
-        c = read_config(f'{test_file_dir}/unit-test-018.json')
+        c = read_config(f'{test_file_dir}/unit-test-018.json', None)
         self.assertEqual(0.0, c.prune_policy)
 
     def test_invalid_prune_policy_small(self):
         with self.assertRaisesRegex(ValueError, "prune-policy must be \\[0,1\\] probability of running prune"):
-            read_config(f'{test_file_dir}/unit-test-019.json')
+            read_config(f'{test_file_dir}/unit-test-019.json', None)
 
     def test_invalid_prune_policy_big(self):
         with self.assertRaisesRegex(ValueError, "prune-policy must be \\[0,1\\] probability of running prune"):
-            read_config(f'{test_file_dir}/unit-test-020.json')
+            read_config(f'{test_file_dir}/unit-test-020.json', None)

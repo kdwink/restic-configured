@@ -112,8 +112,8 @@ def print_config(config: Configuration):
             print(f"\t\t{key} = {value}")
 
 
-def read_config(file):
-    return Configuration(_read_config_json(file))
+def read_config(file, relative_dir):
+    return Configuration(_read_config_json(file, relative_dir))
 
 
 # --------------------------------------------------------------------
@@ -122,9 +122,8 @@ def read_config(file):
 #
 # --------------------------------------------------------------------
 
-def _read_config_json(file):
-    src_dir = os.path.dirname(os.path.abspath(__file__))
-    f = file if os.path.isabs(file) else f"{src_dir}/{file}"
+def _read_config_json(file, relative_dir):
+    f = file if os.path.isabs(file) else f"{relative_dir}/{file}"
     with open(f, 'rb') as f:
         read_bytes = f.read()
         json_string = read_bytes.decode('utf-8')
