@@ -2,11 +2,11 @@
 
 ## Improvements
 
-- [x] Validate config file. Assert required fields and error on unrecognized fields.
-- [x] Make redirect of output optional command line arg.
 - [ ] Single execution from cron (does both backup and forget and/or prune)
 - [ ] Auto cleanup/rotation of logs.
 - [ ] Ability to execute arbitrary command for other repos.
+- [x] Make redirect of output optional command line arg.
+- [x] Validate config file. Assert required fields and error on unrecognized fields.
 - [x] Singe configuration file for: password, excludes, and backup dirs
 - [x] Forget settings are configurable per project in config json.
 - [x] Ability to more easily execute arbitrary restic commands.
