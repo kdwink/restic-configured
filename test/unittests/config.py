@@ -105,9 +105,9 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual(0.0, c.prune_policy)
 
     def test_invalid_prune_policy_small(self):
-        with self.assertRaisesRegex(ValueError, "prune-policy must be \[0,1\] probability of running prune"):
+        with self.assertRaisesRegex(ValueError, "prune-policy must be \\[0,1\\] probability of running prune"):
             read_config(f'{test_file_dir}/unit-test-019.json')
 
     def test_invalid_prune_policy_big(self):
-        with self.assertRaisesRegex(ValueError, "prune-policy must be \[0,1\] probability of running prune"):
+        with self.assertRaisesRegex(ValueError, "prune-policy must be \\[0,1\\] probability of running prune"):
             read_config(f'{test_file_dir}/unit-test-020.json')
