@@ -92,7 +92,6 @@ class Exclude:
 
 
 def print_config(config: Configuration):
-    # banner("configuration")
     print(f"repository    = {config.repository}")
     print(f"log-directory = {config.log_directory}")
     print(f"forget-policy = {config.forget_policy}")
