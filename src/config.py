@@ -38,7 +38,7 @@ class Configuration:
         # prune-policy
         self.prune_policy = d.get('prune-policy') if 'prune-policy' in d else 0
         if self.prune_policy > 1 or self.prune_policy < 0:
-            raise ValueError("prune-policy must be a probability of running prune between 0 and 1 inclusive")
+            raise ValueError("prune-policy must be [0,1] probability of running prune")
         # backup paths
         paths_ = d['backup-paths']
         if len(paths_) < 1: raise ValueError("no backup paths defined")
