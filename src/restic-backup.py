@@ -164,8 +164,8 @@ def main():
     parser = argparse.ArgumentParser(description='Restic backup tool.', add_help=True, allow_abbrev=False)
     parser.add_argument("config_file", help="Configuration file.")
     parser.add_argument("sub_command", help="Sub command.", nargs='*')
-    parser.add_argument('--log', action='store_true')
-    parser.add_argument('--version', action='version', version='%(prog)s 2.0')
+    parser.add_argument('-l', '--log', action='store_true')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 2.0')
     args = parser.parse_args()
 
     valid_commands = {
