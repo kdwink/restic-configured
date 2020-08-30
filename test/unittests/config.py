@@ -112,3 +112,7 @@ class ConfigTest(unittest.TestCase):
     def test_invalid_prune_policy_big(self):
         with self.assertRaisesRegex(ValueError, "prune-policy must be \\[0,1\\] probability of running prune"):
             read_config(f'{test_file_dir}/unit-test-020.json', None)
+
+    def test_default_log_retention_days(self):
+        c = read_config(f'{test_file_dir}/unit-test-021.json', None)
+        self.assertEqual(365 * 2, c.log_retention_days)
