@@ -11,7 +11,7 @@ import json
 
 class Configuration:
     __valid_props = ["backup-paths", "description", "environment", "forget-policy",
-                     "log-directory", "password", "repository"]
+                     "log-directory", "password", "prune-policy", "repository"]
 
     def __init__(self, d):
         _check_props(d, self.__valid_props)
@@ -35,6 +35,10 @@ class Configuration:
         self.forget_policy = d.get('forget-policy')
         if self.forget_policy is not None and len(self.forget_policy) == 0:
             self.forget_policy = None
+        # prune-policy
+        self.prune_policy = d.get('prune-policy') if 'prune-policy' in d else 0
+        if self.prune_policy > 1 or self.prune_policy < 0:
+            raise ValueError("prune-policy must be a probability of running prune between 0 and 1 inclusive")
         # backup paths
         paths_ = d['backup-paths']
         if len(paths_) < 1: raise ValueError("no backup paths defined")
