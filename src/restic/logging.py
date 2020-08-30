@@ -13,7 +13,7 @@ def _file_age_seconds(filepath):
 
 def _delete_old_logs(log_dir):
     secs_per_day = 60 * 60 * 24
-    max_age_seconds = secs_per_day * 14
+    max_age_seconds = secs_per_day * 30
     for root, dirs, files in os.walk(log_dir):
         for file in files:
             log_file = os.path.join(root, file)

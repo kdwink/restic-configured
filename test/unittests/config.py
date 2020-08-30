@@ -13,6 +13,7 @@ class ConfigTest(unittest.TestCase):
         c = read_config(f'{test_file_dir}/unit-test-001.json', None)
         self.assertEqual('sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx', c.repository)
         self.assertEqual('logs/example-osx', c.log_directory)
+        self.assertEqual(128, c.log_retention_days)
         self.assertEqual('abc!d-1234-24^3fvf-ae*3343', c.password)
         self.assertEqual(["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"], c.forget_policy)
         self.assertEqual(0.65, c.prune_policy)

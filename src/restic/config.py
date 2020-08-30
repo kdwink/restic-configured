@@ -11,7 +11,8 @@ import json
 
 class Configuration:
     __valid_props = ["backup-paths", "description", "environment", "forget-policy",
-                     "log-directory", "password", "prune-policy", "repository"]
+                     "log-directory", "log-retention-days", "password", "prune-policy",
+                     "repository"]
 
     def __init__(self, d):
         _check_props(d, self.__valid_props)
@@ -31,12 +32,14 @@ class Configuration:
         self.log_directory = d['log-directory'].strip()
         if len(self.log_directory) == 0:
             raise ValueError("value for 'log-directory' cannot be empty")
+        # log-retention-days
+        self.log_retention_days = d.get('log-retention-days', 365 * 2)
         # forget-policy: optional at this level
         self.forget_policy = d.get('forget-policy')
         if self.forget_policy is not None and len(self.forget_policy) == 0:
             self.forget_policy = None
         # prune-policy
-        self.prune_policy = d.get('prune-policy') if 'prune-policy' in d else 0
+        self.prune_policy = d.get('prune-policy', 0)
         if self.prune_policy > 1 or self.prune_policy < 0:
             raise ValueError("prune-policy must be [0,1] probability of running prune")
         # backup paths
