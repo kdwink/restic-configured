@@ -1,3 +1,6 @@
+# exit script on any error
+trap 'exit' ERR
+
 export PYTHONPATH="../src/"
 
 cd test
