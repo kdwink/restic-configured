@@ -15,6 +15,7 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual('logs/example-osx', c.log_directory)
         self.assertEqual('abc!d-1234-24^3fvf-ae*3343', c.password)
         self.assertEqual(["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"], c.forget_policy)
+        self.assertEqual(0.65, c.prune_policy)
         env = c.environment
         self.assertTrue(isinstance(env, dict))
         self.assertTrue(len(env) == 3)

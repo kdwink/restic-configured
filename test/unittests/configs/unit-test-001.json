@@ -6,6 +6,7 @@
       "key1": "value1", "key2": "value2", "key3": "value3"
   },
   "forget-policy": ["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"],
+  "prune-policy": 0.65,
   "backup-paths": [
     {
       "path": "/Users/keith/software",
