@@ -99,3 +99,7 @@ class ConfigTest(unittest.TestCase):
     def test_invalid_environment_type(self):
         with self.assertRaisesRegex(ValueError, "environment must have keys and values"):
             read_config(f'{test_file_dir}/unit-test-017.json')
+
+    def test_default_prune_policy(self):
+        c = read_config(f'{test_file_dir}/unit-test-018.json')
+        self.assertEqual(0.0, c.prune_policy)
