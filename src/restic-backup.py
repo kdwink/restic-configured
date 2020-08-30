@@ -26,6 +26,7 @@
 import argparse
 import datetime
 import os
+import random
 import subprocess
 import sys
 import time
@@ -80,14 +81,14 @@ def format_command(command_part_array):
 
 def execute_restic(config, args, additional_args):
     password_command = f"{sys.argv[0]} {args.config_file} password"
-    args = [
+    subprocess_args = [
                "restic",
                "--repo", config.repository,
                "--verbose",
                "--password-command", password_command
            ] + additional_args
-    banner(f"command\n\n{format_command(args)}\n")
-    t = subprocess.run(args,
+    banner(f"{additional_args[0]}\n\n{format_command(subprocess_args)}\n")
+    t = subprocess.run(subprocess_args,
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
                        text=True,
@@ -151,6 +152,15 @@ def command_password(config, args):
     exit(0)
 
 
+def command_backup_prune(config, args):
+    command_backup(config, args)
+    command_forget(config, args)
+    if random.random() > .9:
+        command_prune(config, args)
+        command_check(config, args)
+    command_stats(config, args)
+
+
 # --------------------------------------------------------------------
 #
 # main
@@ -170,6 +180,7 @@ def main():
 
     valid_commands = {
         'backup': command_backup,
+        'backup-prune': command_backup_prune,
         'check': command_check,
         'forget': command_forget,
         'init': command_init,
