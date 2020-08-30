@@ -11,9 +11,9 @@ def _file_age_seconds(filepath):
     return time.time() - os.path.getmtime(filepath)
 
 
-def _delete_old_logs(log_dir):
+def _delete_old_logs(log_dir, log_retention_days):
     secs_per_day = 60 * 60 * 24
-    max_age_seconds = secs_per_day * 30
+    max_age_seconds = secs_per_day * log_retention_days
     for root, dirs, files in os.walk(log_dir):
         for file in files:
             log_file = os.path.join(root, file)
@@ -29,7 +29,7 @@ def redirect_stdout(config, relative_dir):
     if not os.path.isdir(d):
         os.makedirs(d)
     sys.stdout = open(f"{d}/{timestamp()}.log", 'w')
-    _delete_old_logs(d)
+    _delete_old_logs(d, config.log_retention_days)
 
 
 def banner(message):
