@@ -3,7 +3,7 @@
 ## Improvements
 
 - [x] Validate config file. Assert required fields and error on unrecognized fields.
-- [ ] Make redirect of output optional command line arg.
+- [x] Make redirect of output optional command line arg.
 - [ ] Single execution from cron (does both backup and forget and/or prune)
 - [ ] Auto cleanup/rotation of logs.
 - [ ] Ability to execute arbitrary command for other repos.
