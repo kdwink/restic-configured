@@ -1,6 +1,6 @@
-import os
 import json
-
+import os
+import sys
 
 # --------------------------------------------------------------------
 #
@@ -129,6 +129,9 @@ def read_config(file, relative_dir):
 
 def _read_config_json(file, relative_dir):
     f = file if os.path.isabs(file) else f"{relative_dir}/{file}"
+    if not os.path.isfile(f):
+        print("specified configuration files does not exist:" + f)
+        sys.exit(-1)
     with open(f, 'rb') as f:
         read_bytes = f.read()
         json_string = read_bytes.decode('utf-8')
