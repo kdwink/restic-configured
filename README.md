@@ -2,8 +2,9 @@
 
 ## Improvements
 
-- [ ] Ability to execute arbitrary command for other repos.
+- [ ] Allow path to restic to be configured.
 - [ ] Packing for easy installation/upgrade on remote hosts.
+- [ ] Ability to execute arbitrary command for other repos.
 - [x] Auto cleanup/rotation of logs.
 - [x] Single execution from cron (does both backup and forget and/or prune)
 - [x] Make redirect of output optional command line arg.
