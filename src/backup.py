@@ -9,15 +9,15 @@
 #
 # USAGE:
 #
-# INIT          : ./restic-backup.py config/example.json init
-# LIST SNAPSHOTS: ./restic-backup.py config/example.json snapshots
-# BACKUP        : ./restic-backup.py config/example.json backup
-# LIST FILES    : ./restic-backup.py config/example.json ls <snapshot|latest>
-# CHECK         : ./restic-backup.py config/example.json check
-# STATS         : ./restic-backup.py config/example.json stats
-# PRUNE         : ./restic-backup.py config/example.json prune
-# RESTORE       : ./restic-backup.py config/example.json restore <snapshot|latest> /etc /tmp/restored/etc
-# UNLOCK        : ./restic-backup.py config/example.json unlock
+# INIT          : ./backup.py config/example.json init
+# LIST SNAPSHOTS: ./backup.py config/example.json snapshots
+# BACKUP        : ./backup.py config/example.json backup
+# LIST FILES    : ./backup.py config/example.json ls <snapshot|latest>
+# CHECK         : ./backup.py config/example.json check
+# STATS         : ./backup.py config/example.json stats
+# PRUNE         : ./backup.py config/example.json prune
+# RESTORE       : ./backup.py config/example.json restore <snapshot|latest> /etc /tmp/restored/etc
+# UNLOCK        : ./backup.py config/example.json unlock
 #
 # DOCS:
 #
