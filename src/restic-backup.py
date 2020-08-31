@@ -44,7 +44,6 @@ def execute_restic(config, args, additional_args):
     subprocess_args = [
                "restic",
                "--repo", config.repository,
-               "--verbose",
                "--password-command", password_command
            ] + additional_args
     banner(f"{additional_args[0]}\n\n{format_command(subprocess_args)}\n")
