@@ -18,7 +18,7 @@
 
 ## switch
 
-[ ] keith-desktop
+[x] keith-desktop
 [x] kdwink-mac
 [ ] dev
 [x] xiujia-pc
