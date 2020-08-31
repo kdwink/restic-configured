@@ -113,9 +113,9 @@ def command_password(config, args):
 
 def command_backup_prune(config, args):
     command_backup(config, args)
-    command_forget(config, args)
     p_random = random.random()
-    if p_random != 0 and p_random <= config.prune_policy:
+    if config.prune_policy != 0 and p_random <= config.prune_policy:
+        command_forget(config, args)
         command_prune(config, args)
         command_check(config, args)
     command_stats(config, args)
