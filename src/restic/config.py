@@ -99,9 +99,11 @@ class Exclude:
 
 
 def print_config(config: Configuration):
-    print(f"repository    = {config.repository}")
-    print(f"log-directory = {config.log_directory}")
-    print(f"forget-policy = {config.forget_policy}")
+    print(f"repository         = {config.repository}")
+    print(f"log-directory      = {config.log_directory}")
+    print(f"log-retention-days = {config.log_retention_days}")
+    print(f"forget-policy      = {config.forget_policy}")
+    print(f"prune-policy       = {config.prune_policy}")
     for backup_path in config.backup_paths:
         print(f"\tpath = {backup_path.path}")
         if backup_path.has_forgets():
