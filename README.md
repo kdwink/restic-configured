@@ -2,9 +2,9 @@
 
 ## Improvements
 
-- [ ] Auto cleanup/rotation of logs.
 - [ ] Ability to execute arbitrary command for other repos.
 - [ ] Packing for easy installation/upgrade on remote hosts.
+- [x] Auto cleanup/rotation of logs.
 - [x] Single execution from cron (does both backup and forget and/or prune)
 - [x] Make redirect of output optional command line arg.
 - [x] Validate config file. Assert required fields and error on unrecognized fields.
