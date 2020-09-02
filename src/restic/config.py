@@ -10,9 +10,9 @@ import sys
 
 
 class Configuration:
-    __valid_props = ["backup-paths", "description", "environment", "forget-policy",
-                     "log-directory", "log-retention-days", "password", "prune-policy",
-                     "repository"]
+    __valid_props = ["backup-paths", "environment", "forget-policy",
+                     "log-directory", "log-retention-days", "note",
+                     "password", "prune-policy", "repository"]
 
     def __init__(self, d):
         _check_props(d, self.__valid_props)
@@ -53,7 +53,7 @@ class Configuration:
 
 
 class BackupPath:
-    __valid_props = ["description", "excludes", "forget-policy", "path"]
+    __valid_props = [ "excludes", "forget-policy", "note", "path"]
 
     def __init__(self, d):
         _check_props(d, self.__valid_props)
@@ -75,16 +75,16 @@ class BackupPath:
 
 
 class Exclude:
-    __valid_props = ["description", "pattern"]
+    __valid_props = ["note", "pattern"]
 
     def __init__(self, d):
         if isinstance(d, str):
             self.pattern = d.strip()
-            self.description = None
+            self.note = None
         elif isinstance(d, dict):
             _check_props(d, self.__valid_props)
             self.pattern = d['pattern'].strip()
-            self.description = d.get('description')
+            self.note = d.get('note')
         else:
             raise ValueError("unexpected type for exclude element: " + str(type(d)))
         if len(self.pattern) == 0:

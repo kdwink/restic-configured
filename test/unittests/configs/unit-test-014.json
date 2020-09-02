@@ -1,5 +1,5 @@
 {
-  "description": "INVALID: empty repository",
+  "note": "INVALID: empty repository",
   "repository": "    ",
   "password": "8888",
   "log-directory": "logs",
