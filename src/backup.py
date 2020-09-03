@@ -31,6 +31,7 @@ import sys
 import time
 from restic.config import read_config, print_config
 from restic.logging import banner, redirect_stdout, format_command
+from restic.version import read_version
 
 
 # --------------------------------------------------------------------
@@ -131,11 +132,13 @@ def command_backup_prune(config, args):
 def main():
     start_time = time.perf_counter()
 
+    version_string = read_version()
+
     parser = argparse.ArgumentParser(description='Restic backup tool.', add_help=True, allow_abbrev=False)
     parser.add_argument("config_file", help="Configuration file.")
     parser.add_argument("sub_command", help="Sub command.", nargs='*')
     parser.add_argument('-l', '--log', action='store_true')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 2.0')
+    parser.add_argument('-v', '--version', action='version', version=f'%(prog)s {version_string}')
     args = parser.parse_args()
 
     valid_commands = {
