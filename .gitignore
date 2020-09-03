@@ -2,3 +2,6 @@ logs/
 
 **/*.pyc
 **/__pycache__/**
+
+
+restic-backup*.tgz
