@@ -29,7 +29,7 @@ import random
 import subprocess
 import sys
 import time
-from restic.config import read_config, print_config
+from restic.config import read_config, print_config, print_env
 from restic.logging import banner, redirect_stdout, format_command
 from restic.version import read_version
 
@@ -171,6 +171,8 @@ def main():
         redirect_stdout(config, src_dir)
 
     if args.sub_command[0] != 'password':
+        banner("env")
+        print_env()
         banner("config")
         print_config(config)
         banner("starting")

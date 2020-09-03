@@ -97,6 +97,10 @@ class Exclude:
 #
 # --------------------------------------------------------------------
 
+def print_env():
+    python_ver = sys.version.replace("\n", " ")
+    print(f"sys.version        = {python_ver}")
+
 
 def print_config(config: Configuration):
     print(f"repository         = {config.repository}")
