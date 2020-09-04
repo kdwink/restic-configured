@@ -20,7 +20,7 @@ sed -i '' "s/version=${OLD_VER}\$/version=${NEW_VER}/g" "${VERSION_FILE}"
 sed -i ''q "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
 
 
-git commit -m "VERSION: ${NEW_VER}" -a
+git commit --all --message "VERSION: ${NEW_VER}"
 git push origin HEAD
 
 
