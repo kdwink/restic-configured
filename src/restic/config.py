@@ -100,6 +100,8 @@ class Exclude:
 def print_env():
     python_ver = sys.version.replace("\n", " ")
     print(f"sys.version        = {python_ver}")
+    print(f"USER               = {os.environ['USER']}")
+    print(f"HOME               = {os.environ['HOME']}")
 
 
 def print_config(config: Configuration):
