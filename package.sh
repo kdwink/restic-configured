@@ -10,8 +10,14 @@ HASH=$(git rev-parse --short HEAD)
 
 OLD_VER=$(grep version ${VERSION_FILE} | cut -d "=" -f2)
 NEW_VER=$(( OLD_VER + 1 ))
-sed -i "s/version=${OLD_VER}\$/version=${NEW_VER}/g" ${VERSION_FILE}
-sed -i "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
+
+printf "\n"
+printf "OLD_VER: %s \n" "${OLD_VER}"
+printf "NEW_VER: %s \n" "${NEW_VER}"
+printf "\n"
+
+sed -i '' "s/version=${OLD_VER}\$/version=${NEW_VER}/g" "${VERSION_FILE}"
+sed -i ''q "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
 
 
 git commit -m "VERSION: ${NEW_VER}" -a
