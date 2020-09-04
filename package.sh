@@ -27,7 +27,7 @@ sed -i '' "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
 
 git commit --all --message "VERSION: ${NEW_VER}"
 git tag "v${NEW_VER}"
-git push origin HEAD
+git push --tags origin HEAD
 
 
 #----------------------------------------------------------------
