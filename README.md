@@ -20,7 +20,7 @@
 
 [x] keith-desktop
 [x] kdwink-mac
-[ ] dev
+[x] dev
 [x] xiujia-pc
 [ ] forum01.supercharge.info
 [ ] super01.supercharge.info
