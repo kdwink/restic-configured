@@ -1,2 +1,2 @@
-version=7
-hash=9a12d2d
+version=8
+hash=dd66721
