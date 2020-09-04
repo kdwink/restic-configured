@@ -1,3 +1,8 @@
+#==============================================================================
+#
+#
+#
+#==============================================================================
 # exit script on any error
 trap 'exit' ERR
 
@@ -20,15 +25,23 @@ sed -i '' "s/version=${OLD_VER}\$/version=${NEW_VER}/g" "${VERSION_FILE}"
 sed -i ''q "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
 
 
-git commit --all --message "VERSION: ${NEW_VER}"
-git push origin HEAD
+#git commit --all --message "VERSION: ${NEW_VER}"
+#git push origin HEAD
 
 
 #----------------------------------------------------------------
 # package src
 #----------------------------------------------------------------
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    TAR="gtar"
+else
+    TAR="tar"
+fi
 
-TAR_FILE="restic-backup-v${NEW_VER}.tar.gz"
 
-tar --create --verbose --gzip --file "${TAR_FILE}" src
-tar --append --verbose --gzip --file "${TAR_FILE}" config
+TAR_FILE="restic-backup-v${NEW_VER}.tar"
+
+${TAR} --transform 's+^+restic-backup/+' --create --file "${TAR_FILE}" src
+${TAR} --transform 's+^+restic-backup/+' --append --file "${TAR_FILE}" config
+
+printf "Created %s \n" "${TAR_FILE}"
