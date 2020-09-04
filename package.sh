@@ -28,4 +28,7 @@ git push origin HEAD
 # package src
 #----------------------------------------------------------------
 
-tar --create --verbose --gzip --file restic-backup-v${NEW_VER}.tgz src
+TAR_FILE="restic-backup-v${NEW_VER}.tar.gz"
+
+tar --create --verbose --gzip --file "${TAR_FILE}" src
+tar --append --verbose --gzip --file "${TAR_FILE}" config
