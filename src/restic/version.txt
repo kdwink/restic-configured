@@ -1,2 +1,2 @@
-version=6
-hash=009e917
+version=7
+hash=9a12d2d
