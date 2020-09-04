@@ -3,8 +3,8 @@
 ## Improvements
 
 - [ ] Allow path to restic to be configured.
-- [x] Packing for easy installation/upgrade on remote hosts.
 - [ ] Ability to execute arbitrary command for other repos.
+- [x] Packing for easy installation/upgrade on remote hosts.
 - [x] Give a better error message if configuration file does not exist.
 - [x] Auto cleanup/rotation of logs.
 - [x] Single execution from cron (does both backup and forget and/or prune)
