@@ -22,7 +22,7 @@ printf "NEW_VER: %s \n" "${NEW_VER}"
 printf "\n"
 
 sed -i '' "s/version=${OLD_VER}\$/version=${NEW_VER}/g" "${VERSION_FILE}"
-sed -i ''q "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
+sed -i '' "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
 
 
 git commit --all --message "VERSION: ${NEW_VER}"

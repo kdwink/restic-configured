@@ -4,4 +4,4 @@ logs/
 **/__pycache__/**
 
 
-restic-backup*.tgz
+restic-backup*.tar
