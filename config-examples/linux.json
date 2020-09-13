@@ -1,0 +1,35 @@
+{
+  "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test",
+  "log-directory": "../logs/test",
+  "log-retention-days": 1,
+  "password": "abcd-1234-243fvf-ae3343",
+  "forget-policy": ["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"],
+  "prune-policy": 0.05,
+  "backup-paths": [
+    {
+      "path": "/home/keith/.ivy2",
+      "note": "",
+      "excludes": [
+        {
+          "pattern": "*.pdf"
+        },
+        {
+          "pattern": "*.odf"
+        },
+        {
+          "pattern": "**/target/*.jar"
+        }
+      ]
+    },
+    {
+      "path": "/Users/keith/repos/apps"
+    },
+    {
+      "path": "/home/keith/.local",
+      "excludes": [
+        {"pattern": "*.img"},
+        {"pattern": "*.thing"}
+      ]
+    }
+  ]
+}

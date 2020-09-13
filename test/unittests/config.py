@@ -26,6 +26,13 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual(6, len(c.backup_paths))
         self.assertEqual(".DS_Store", c.backup_paths[0].excludes[0].pattern)
         self.assertEqual("dbeaver", c.backup_paths[0].excludes[1].pattern)
+        # backup-commands
+        commands = c.backup_commands
+        self.assertEqual(2, len(commands))
+        self.assertEqual(commands[0].command, ["ls", "-lat", "/Users/keith"])
+        self.assertEqual(commands[0].repo_path, "/ls-lat-users.txt")
+        self.assertEqual(commands[1].command, ["rm", "-r", "/tmp/keith/stuff"])
+        self.assertEqual(commands[1].repo_path, "/rm-r-tmp.txt")
 
     def test_all_real_configs_valid(self):
         config_dir = f"{src_dir}/../../config/"
@@ -35,7 +42,7 @@ class ConfigTest(unittest.TestCase):
             for file in files:
                 read_config(os.path.join(root, file), None)
                 config_count = config_count + 1
-        self.assertTrue(config_count > 8)
+        self.assertTrue(config_count >= 8)
 
     def test_bad_property_in_top_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'foobar'"):
@@ -58,7 +65,7 @@ class ConfigTest(unittest.TestCase):
             read_config(f'{test_file_dir}/unit-test-006.json', None)
 
     def test_missing_backup_paths(self):
-        with self.assertRaisesRegex(ValueError, "no backup paths defined"):
+        with self.assertRaisesRegex(ValueError, "no backup paths or commands defined"):
             read_config(f'{test_file_dir}/unit-test-007.json', None)
 
     def test_invalid_type_in_excludes(self):
@@ -116,3 +123,23 @@ class ConfigTest(unittest.TestCase):
     def test_default_log_retention_days(self):
         c = read_config(f'{test_file_dir}/unit-test-021.json', None)
         self.assertEqual(365 * 2, c.log_retention_days)
+
+    def test_invalid_commands_property(self):
+        with self.assertRaisesRegex(ValueError, "invalid property: 'path'"):
+            read_config(f'{test_file_dir}/unit-test-022.json', None)
+
+    def test_invalid_type_for_command_prop_command(self):
+        with self.assertRaisesRegex(ValueError, "expected command to be a list"):
+            read_config(f'{test_file_dir}/unit-test-023.json', None)
+
+    def test_invalid_type_for_command_prop_repo_path(self):
+        with self.assertRaisesRegex(ValueError, "expected repo-path to be a string"):
+            read_config(f'{test_file_dir}/unit-test-024.json', None)
+
+    def test_invalid_empty_value_command_array(self):
+        with self.assertRaisesRegex(ValueError, "expected command list to have at least one element"):
+            read_config(f'{test_file_dir}/unit-test-025.json', None)
+
+    def test_invalid_command_repo_path(self):
+        with self.assertRaisesRegex(ValueError, "repo path for commands must start with forward slash"):
+            read_config(f'{test_file_dir}/unit-test-026.json', None)

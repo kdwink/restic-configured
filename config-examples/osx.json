@@ -1,23 +1,14 @@
 {
   "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx",
+  "log-directory": "../logs/example-osx",
+  "log-retention-days": 1,
   "password": "abc!d-1234-24^3fvf-ae*3343",
-  "log-directory": "logs/example-osx",
-  "log-retention-days": 128,
-  "environment": {
-      "key1": "value1", "key2": "value2", "key3": "value3"
-  },
   "forget-policy": ["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"],
-  "prune-policy": 0.65,
+  "prune-policy": 1.0,
   "backup-commands": [
     {
       "command": ["ls", "-lat", "/Users/keith"],
-      "repo-path": "/ls-lat-users.txt",
-      "note": "note1"
-    },
-    {
-      "command": ["rm", "-r", "/tmp/keith/stuff"],
-      "repo-path": "/rm-r-tmp.txt",
-      "note": "note2"
+      "repo-path": "/ls-lat-users.txt"
     }
   ],
   "backup-paths": [
@@ -40,12 +31,12 @@
     },
     {
       "path": "/Users/keith/repos/github.com",
-      "excludes": [ "*.gz", "*.jar", "**/.git", "**/node_modules" ]
+      "excludes": [ "*.gz", "*.jar", "**/node_modules" ]
     },
     {
       "path": "/Users/keith/repos/github.platforms.engineering",
       "forget-policy": ["--keep-daily", "12"],
-      "excludes": [ "*.gz", "*.jar", "**/.git", "**/node_modules" ]
+      "excludes": [ "*.gz", "*.jar", "**/node_modules" ]
     }
   ]
 }

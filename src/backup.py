@@ -40,7 +40,8 @@ from restic.version import read_version
 #
 # --------------------------------------------------------------------
 
-def execute_restic(config, args, additional_args):
+
+def execute_restic(config, args, additional_args, stdin=None):
     password_command = f"{sys.argv[0]} {args.config_file} password"
     subprocess_args = [
                "restic",
@@ -52,7 +53,8 @@ def execute_restic(config, args, additional_args):
                        stdout=subprocess.PIPE,
                        stderr=subprocess.STDOUT,
                        text=True,
-                       env=config.environment
+                       env=config.environment,
+                       stdin=stdin
                        )
     print(t.stdout)
 
@@ -67,6 +69,8 @@ def command_prune(config, args): execute_restic(config, args, ['prune'])
 
 
 def command_forget(config, args):
+    for backup_command in config.backup_commands:
+        execute_restic(config, args, ['forget', '--path', backup_command.repo_path] + config.forget_policy)
     for backup_path in config.backup_paths:
         policy = config.forget_policy if not backup_path.has_forgets() else backup_path.forget_policy
         execute_restic(config, args, ['forget', '--path', backup_path.path] + policy)
@@ -89,11 +93,18 @@ def command_restore(config, args):
 
 
 def command_backup(config, args):
-    for backup_path in config.backup_paths:
-        banner(f"backing up '{backup_path.path}'")
-        a = ["backup", "--one-file-system", backup_path.path]
-        if backup_path.has_excludes():
-            for e in backup_path.excludes:
+    for bc in config.backup_commands:
+        banner(f"backing up COMMAND result '{bc.command}'")
+        with subprocess.Popen(bc.command, stdout=subprocess.PIPE) as ps:
+            a = ["backup", "--stdin", "--stdin-filename", bc.repo_path]
+            execute_restic(config, args, a, ps.stdout)
+            ps.wait()
+
+    for bp in config.backup_paths:
+        banner(f"backing up PATH '{bp.path}'")
+        a = ["backup", "--one-file-system", bp.path]
+        if bp.has_excludes():
+            for e in bp.excludes:
                 a = a + ['--exclude', e.pattern]
         execute_restic(config, args, a)
 
@@ -107,6 +118,7 @@ def command_unlock(config, args): execute_restic(config, args, ['unlock'])
 def command_init(config, args): execute_restic(config, args, ['init'])
 
 
+# noinspection PyUnusedLocal
 def command_password(config, args):
     print(config.password, end='')
     exit(0)

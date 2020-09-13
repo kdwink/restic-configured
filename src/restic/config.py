@@ -2,6 +2,7 @@ import json
 import os
 import sys
 
+
 # --------------------------------------------------------------------
 #
 # classes
@@ -10,9 +11,9 @@ import sys
 
 
 class Configuration:
-    __valid_props = ["backup-paths", "environment", "forget-policy",
-                     "log-directory", "log-retention-days", "note",
-                     "password", "prune-policy", "repository"]
+    __valid_props = ["backup-paths", "backup-commands", "environment",
+                     "forget-policy", "log-directory", "log-retention-days",
+                     "note", "password", "prune-policy", "repository"]
 
     def __init__(self, d):
         _check_props(d, self.__valid_props)
@@ -42,18 +43,26 @@ class Configuration:
         self.prune_policy = d.get('prune-policy', 0)
         if self.prune_policy > 1 or self.prune_policy < 0:
             raise ValueError("prune-policy must be [0,1] probability of running prune")
+        # backup commands
+        self.backup_commands = []
+        if 'backup-commands' in d:
+            commands_ = d['backup-commands']
+            self.backup_commands = list(map(lambda x: BackupCommand(x), commands_))
         # backup paths
-        paths_ = d['backup-paths']
-        if len(paths_) < 1: raise ValueError("no backup paths defined")
-        self.backup_paths = list(map(lambda x: BackupPath(x), paths_))
-        _check_for_duplicates(list(map(lambda x: x.path, self.backup_paths)), "duplicate path value")
+        self.backup_paths = []
+        if 'backup-paths' in d:
+            paths_ = d['backup-paths']
+            self.backup_paths = list(map(lambda x: BackupPath(x), paths_))
+            _check_for_duplicates(list(map(lambda x: x.path, self.backup_paths)), "duplicate path value")
+        if len(self.backup_paths) + len(self.backup_commands) < 1:
+            raise ValueError("no backup paths or commands defined")
 
     def has_environment(self):
         return self.environment is not None
 
 
 class BackupPath:
-    __valid_props = [ "excludes", "forget-policy", "note", "path"]
+    __valid_props = ["excludes", "forget-policy", "note", "path"]
 
     def __init__(self, d):
         _check_props(d, self.__valid_props)
@@ -72,6 +81,25 @@ class BackupPath:
 
     def has_forgets(self):
         return self.forget_policy is not None
+
+
+class BackupCommand:
+    __valid_props = ["command", "note", "repo-path"]
+
+    def __init__(self, d):
+        _check_props(d, self.__valid_props)
+        self.command = d['command']
+        self.repo_path = d['repo-path']
+        if not isinstance(self.command, list):
+            raise ValueError("expected command to be a list")
+        if not isinstance(self.repo_path, str):
+            raise ValueError("expected repo-path to be a string")
+        if len(self.command) == 0:
+            raise ValueError("expected command list to have at least one element")
+        # restic add as slash if you don't and then commands like forget don't work
+        # if you don't use a leading slash.
+        if not self.repo_path.startswith("/"):
+            raise ValueError("repo path for commands must start with forward slash")
 
 
 class Exclude:
@@ -110,6 +138,8 @@ def print_config(config: Configuration):
     print(f"log-retention-days = {config.log_retention_days}")
     print(f"forget-policy      = {config.forget_policy}")
     print(f"prune-policy       = {config.prune_policy}")
+    for backup_command in config.backup_commands:
+        print(f"\t{backup_command.command} > {backup_command.repo_path}")
     for backup_path in config.backup_paths:
         print(f"\tpath = {backup_path.path}")
         if backup_path.has_forgets():
