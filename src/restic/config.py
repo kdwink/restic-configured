@@ -13,26 +13,23 @@ import sys
 class Configuration:
     __valid_props = ["backup-paths", "backup-commands", "environment",
                      "forget-policy", "log-directory", "log-retention-days",
-                     "note", "password", "prune-policy", "repository"]
+                     "note", "password", "prune-policy", "repository",
+                     "restic-path"]
 
     def __init__(self, d):
         _check_props(d, self.__valid_props)
         # repository
         self.repository = d['repository'].strip()
-        if len(self.repository) == 0:
-            raise ValueError("value for 'repository' cannot be empty")
+        check(len(self.repository) > 0, "value for 'repository' cannot be empty")
         # environment
         self.environment = d.get('environment')
-        if self.environment is not None and not isinstance(self.environment, dict):
-            raise ValueError("environment must have keys and values")
+        check(self.environment is None or isinstance(self.environment, dict), "environment must have keys and values")
         # password
         self.password = d['password'].strip()
-        if len(self.password) == 0:
-            raise ValueError("value for 'password' cannot be empty")
+        check(len(self.password) > 0, "value for 'password' cannot be empty")
         # log directory
         self.log_directory = d['log-directory'].strip()
-        if len(self.log_directory) == 0:
-            raise ValueError("value for 'log-directory' cannot be empty")
+        check(len(self.log_directory) > 0, "value for 'log-directory' cannot be empty")
         # log-retention-days
         self.log_retention_days = d.get('log-retention-days', 365 * 2)
         # forget-policy: optional at this level
@@ -41,8 +38,7 @@ class Configuration:
             self.forget_policy = None
         # prune-policy
         self.prune_policy = d.get('prune-policy', 0)
-        if self.prune_policy > 1 or self.prune_policy < 0:
-            raise ValueError("prune-policy must be [0,1] probability of running prune")
+        check(0 <= self.prune_policy <= 1, "prune-policy must be [0,1] probability of running prune")
         # backup commands
         self.backup_commands = []
         if 'backup-commands' in d:
@@ -54,8 +50,11 @@ class Configuration:
             paths_ = d['backup-paths']
             self.backup_paths = list(map(lambda x: BackupPath(x), paths_))
             _check_for_duplicates(list(map(lambda x: x.path, self.backup_paths)), "duplicate path value")
-        if len(self.backup_paths) + len(self.backup_commands) < 1:
-            raise ValueError("no backup paths or commands defined")
+        check(len(self.backup_paths) + len(self.backup_commands) > 0, "no backup paths or commands defined")
+        # restic-path
+        self.restic_path = d.get('restic-path', 'restic')
+        check(isinstance(self.restic_path, str), "expected restic-path to be a string")
+        check(len(self.restic_path.strip()) > 0, "expected a non-empty value for restic-path")
 
     def has_environment(self):
         return self.environment is not None
@@ -90,16 +89,12 @@ class BackupCommand:
         _check_props(d, self.__valid_props)
         self.command = d['command']
         self.repo_path = d['repo-path']
-        if not isinstance(self.command, list):
-            raise ValueError("expected command to be a list")
-        if not isinstance(self.repo_path, str):
-            raise ValueError("expected repo-path to be a string")
-        if len(self.command) == 0:
-            raise ValueError("expected command list to have at least one element")
+        check(isinstance(self.command, list), "expected command to be a list")
+        check(isinstance(self.repo_path, str), "expected repo-path to be a string")
+        check(len(self.command) > 0, "expected command list to have at least one element")
         # restic add as slash if you don't and then commands like forget don't work
         # if you don't use a leading slash.
-        if not self.repo_path.startswith("/"):
-            raise ValueError("repo path for commands must start with forward slash")
+        check(self.repo_path.startswith("/"), "repo path for commands must start with forward slash")
 
 
 class Exclude:
@@ -115,8 +110,7 @@ class Exclude:
             self.note = d.get('note')
         else:
             raise ValueError("unexpected type for exclude element: " + str(type(d)))
-        if len(self.pattern) == 0:
-            raise ValueError("exclude pattern can not be empty")
+        check(len(self.pattern) > 0, "exclude pattern can not be empty")
 
 
 # --------------------------------------------------------------------
@@ -155,6 +149,10 @@ def print_config(config: Configuration):
 
 def read_config(file, relative_dir):
     return Configuration(_read_config_json(file, relative_dir))
+
+
+def check(condition, message):
+    if not condition: raise ValueError(message)
 
 
 # --------------------------------------------------------------------

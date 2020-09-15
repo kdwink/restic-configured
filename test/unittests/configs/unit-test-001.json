@@ -8,6 +8,7 @@
   },
   "forget-policy": ["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"],
   "prune-policy": 0.65,
+  "restic-path": "/root/stuff/bin/restic",
   "backup-commands": [
     {
       "command": ["ls", "-lat", "/Users/keith"],

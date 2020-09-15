@@ -33,6 +33,8 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual(commands[0].repo_path, "/ls-lat-users.txt")
         self.assertEqual(commands[1].command, ["rm", "-r", "/tmp/keith/stuff"])
         self.assertEqual(commands[1].repo_path, "/rm-r-tmp.txt")
+        # restic-path
+        self.assertEqual(c.restic_path, '/root/stuff/bin/restic')
 
     def test_all_real_configs_valid(self):
         config_dir = f"{src_dir}/../../config/"
@@ -143,3 +145,11 @@ class ConfigTest(unittest.TestCase):
     def test_invalid_command_repo_path(self):
         with self.assertRaisesRegex(ValueError, "repo path for commands must start with forward slash"):
             read_config(f'{test_file_dir}/unit-test-026.json', None)
+
+    def test_invalid_restic_path_empty(self):
+        with self.assertRaisesRegex(ValueError, "expected a non-empty value for restic-path"):
+            read_config(f'{test_file_dir}/unit-test-027.json', None)
+
+    def test_invalid_restic_path_type(self):
+        with self.assertRaisesRegex(ValueError, "expected restic-path to be a string"):
+            read_config(f'{test_file_dir}/unit-test-028.json', None)

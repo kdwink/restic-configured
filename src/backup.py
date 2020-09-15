@@ -44,10 +44,10 @@ from restic.version import read_version
 def execute_restic(config, args, additional_args, stdin=None):
     password_command = f"{sys.argv[0]} {args.config_file} password"
     subprocess_args = [
-               "restic",
-               "--repo", config.repository,
-               "--password-command", password_command
-           ] + additional_args
+                          config.restic_path,
+                          "--repo", config.repository,
+                          "--password-command", password_command
+                      ] + additional_args
     banner(f"{additional_args[0]}\n\n{format_command(subprocess_args)}\n")
     t = subprocess.run(subprocess_args,
                        stdout=subprocess.PIPE,
