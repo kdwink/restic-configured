@@ -2,7 +2,7 @@
 
 ## Improvements
 
-- [ ] Allow path to restic to be configured.
+- [x] Allow path to restic to be configured.
 - [ ] Ability to execute arbitrary command for other repos.
 - [x] Packing for easy installation/upgrade on remote hosts.
 - [x] Give a better error message if configuration file does not exist.
