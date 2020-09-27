@@ -2,8 +2,9 @@
 
 ## Improvements
 
-- [x] Allow path to restic to be configured.
+- [ ] Package restic executable with script deployable.
 - [ ] Ability to execute arbitrary command for other repos.
+- [x] Allow restic path to be configured.
 - [x] Packing for easy installation/upgrade on remote hosts.
 - [x] Give a better error message if configuration file does not exist.
 - [x] Auto cleanup/rotation of logs.
@@ -14,17 +15,6 @@
 - [x] Forget settings are configurable per project in config json.
 - [x] Ability to more easily execute arbitrary restic commands.
 
-
-
-## switch
-
-[x] keith-desktop
-[x] kdwink-mac
-[x] dev
-[x] xiujia-pc
-[x] forum01.supercharge.info
-[x] super01.supercharge.info
-[ ] keithfabryorders.com 
 
 
 ## notes
