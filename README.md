@@ -30,3 +30,9 @@ close to the repository, issues the prune command.
 * Trailing / in pattern is ignored, leading / anchors pattern to root directory.
 * Pattern must match one or more complete file/directory components of path.
 * Single * wildcard does NOT match over directory separator
+
+
+## OSX setup
+
+On OSX it may be necessary to grant `/usr/sbin/cron` "Full Disk Access" permission.  Settings -> 
+Security & Privacy -> Full Disk Access.
