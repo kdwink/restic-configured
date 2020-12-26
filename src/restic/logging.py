@@ -23,10 +23,9 @@ def _delete_old_logs(log_dir, log_retention_days):
                 banner(f"deleting old log file: age={age_seconds}; log_file={log_file};")
 
 
-def redirect_stdout(config, relative_dir):
-    log_dir = config.log_directory
-    d = log_dir if os.path.isabs(log_dir) else f"{relative_dir}/{log_dir}"
-    if not os.path.isdir(d):
+def redirect_stdout(config):
+    d = config.log_directory_abs()
+    if not os.path.isdir(config.log_directory_abs()):
         os.makedirs(d)
     sys.stdout = open(f"{d}/{timestamp()}.log", 'w')
     _delete_old_logs(d, config.log_retention_days)

@@ -36,5 +36,8 @@ if [[ ! -f "${FILE_WINDO}" ]]; then
   rm "${ARCHIVE_WINDO}"
 fi
 
+chmod u+x *
+
 cd ..
+
 

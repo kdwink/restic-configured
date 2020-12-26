@@ -16,7 +16,9 @@ class Configuration:
                      "note", "password", "prune-policy", "repository",
                      "restic-path"]
 
-    def __init__(self, d):
+    def __init__(self, d, src_dir):
+        self.src_dir = src_dir
+        # check
         _check_props(d, self.__valid_props)
         # repository
         self.repository = d['repository'].strip()
@@ -58,6 +60,15 @@ class Configuration:
 
     def has_environment(self):
         return self.environment is not None
+
+    def restic_path_abs(self):
+        return self._abs_path(self.restic_path)
+
+    def log_directory_abs(self):
+        return self._abs_path(self.log_directory)
+
+    def _abs_path(self, path):
+        return path if os.path.isabs(path) else os.path.normpath(f"{self.src_dir}/{path}")
 
 
 class BackupPath:
@@ -128,6 +139,7 @@ def print_env():
 
 def print_config(config: Configuration):
     print(f"repository         = {config.repository}")
+    print(f"restic-path        = {config.restic_path}")
     print(f"log-directory      = {config.log_directory}")
     print(f"log-retention-days = {config.log_retention_days}")
     print(f"forget-policy      = {config.forget_policy}")
@@ -147,8 +159,9 @@ def print_config(config: Configuration):
             print(f"\t\t{key} = {value}")
 
 
-def read_config(file, relative_dir):
-    return Configuration(_read_config_json(file, relative_dir))
+def read_config(file, src_dir):
+    json_string = _read_config_json(file, src_dir)
+    return Configuration(json_string, src_dir)
 
 
 def check(condition, message):

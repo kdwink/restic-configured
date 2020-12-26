@@ -44,7 +44,7 @@ from restic.version import read_version
 def execute_restic(config, args, additional_args, stdin=None):
     password_command = f"{sys.argv[0]} {args.config_file} password"
     subprocess_args = [
-                          config.restic_path,
+                          config.restic_path_abs(),
                           "--repo", config.repository,
                           "--password-command", password_command
                       ] + additional_args
@@ -180,7 +180,7 @@ def main():
     config = read_config(args.config_file, src_dir)
 
     if args.log:
-        redirect_stdout(config, src_dir)
+        redirect_stdout(config)
 
     if args.sub_command[0] != 'password':
         banner("env")
