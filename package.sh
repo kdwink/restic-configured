@@ -1,6 +1,7 @@
 #==============================================================================
 #
-#
+# Package these scripts and restic executable for distribution on remote
+# machines.
 #
 #==============================================================================
 # exit script on any error
@@ -29,6 +30,11 @@ git commit --all --message "VERSION: ${NEW_VER}"
 git tag "v${NEW_VER}"
 git push --tags origin HEAD
 
+#----------------------------------------------------------------
+# download the binary distribution of restic
+#----------------------------------------------------------------
+./download-restic-executable.sh
+
 
 #----------------------------------------------------------------
 # package src
@@ -39,10 +45,10 @@ else
     TAR="tar"
 fi
 
-
 TAR_FILE="restic-backup-v${NEW_VER}.tar"
 
 ${TAR} --transform 's+^+restic-backup/+' --create --file "${TAR_FILE}" src
 ${TAR} --transform 's+^+restic-backup/+' --append --file "${TAR_FILE}" config
+${TAR} --transform 's+^+restic-backup/+' --append --file "${TAR_FILE}" bin
 
 printf "Created %s \n" "${TAR_FILE}"

@@ -1,4 +1,5 @@
 logs/
+bin/
 
 **/*.pyc
 **/__pycache__/**
