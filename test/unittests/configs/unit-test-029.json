@@ -1,0 +1,16 @@
+{
+  "note": "VALID: with ABSOLUTE restic-path directory",
+  "repository": "sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx",
+  "password": "abc!d-1234-24^3fvf-ae*3343",
+  "log-directory": "../logs/example-osx",
+  "log-retention-days": 128,
+  "prune-policy": 0.65,
+  "restic-path": "/root/bin/restic-amd64",
+  "backup-paths": [
+    {
+      "path": "/Users/keith/software",
+      "forget-policy": ["--keep-daily", "2"],
+      "excludes": [ ".DS_Store", "dbeaver" ]
+    }
+  ]
+}

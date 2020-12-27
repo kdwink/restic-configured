@@ -9,10 +9,32 @@ test_file_dir = f"{src_dir}/configs"
 
 class ConfigTest(unittest.TestCase):
 
+    def test_restic_path_abs(self):
+        c = read_config(f'{test_file_dir}/unit-test-001.json', test_file_dir)
+        self.assertEqual(c.restic_path, '../bin/restic-amd64')
+        self.assertEqual(c.restic_path_abs(), os.path.normpath(f'{test_file_dir}/../bin/restic-amd64'))
+
+    def test_restic_path_abs_with_abs_path_in_config_file(self):
+        c = read_config(f'{test_file_dir}/unit-test-029.json', test_file_dir)
+        self.assertEqual(c.restic_path, '/root/bin/restic-amd64')
+        self.assertEqual(c.restic_path_abs(), '/root/bin/restic-amd64')
+
+    def test_log_directory_abs(self):
+        c = read_config(f'{test_file_dir}/unit-test-001.json', test_file_dir)
+        self.assertEqual('../logs/example-osx', c.log_directory)
+        self.assertEqual(c.log_directory_abs(), os.path.normpath(f'{test_file_dir}/../logs/example-osx'))
+
+    def test_log_directory_abs_with_abs_path_in_config_file(self):
+        c = read_config(f'{test_file_dir}/unit-test-030.json', test_file_dir)
+        self.assertEqual('/home/user/bob/logs', c.log_directory)
+        self.assertEqual(c.log_directory_abs(), '/home/user/bob/logs')
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
     def test_one_good_config(self):
         c = read_config(f'{test_file_dir}/unit-test-001.json', None)
         self.assertEqual('sftp:restic@dev.redshiftsoft.com:restic-repos/test-repo-osx', c.repository)
-        self.assertEqual('logs/example-osx', c.log_directory)
+        self.assertEqual('../logs/example-osx', c.log_directory)
         self.assertEqual(128, c.log_retention_days)
         self.assertEqual('abc!d-1234-24^3fvf-ae*3343', c.password)
         self.assertEqual(["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12"], c.forget_policy)
@@ -34,7 +56,9 @@ class ConfigTest(unittest.TestCase):
         self.assertEqual(commands[1].command, ["rm", "-r", "/tmp/keith/stuff"])
         self.assertEqual(commands[1].repo_path, "/rm-r-tmp.txt")
         # restic-path
-        self.assertEqual(c.restic_path, '/root/stuff/bin/restic')
+        self.assertEqual(c.restic_path, '../bin/restic-amd64')
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     def test_all_real_configs_valid(self):
         config_dir = f"{src_dir}/../../config/"
@@ -45,6 +69,8 @@ class ConfigTest(unittest.TestCase):
                 read_config(os.path.join(root, file), None)
                 config_count = config_count + 1
         self.assertTrue(config_count >= 8)
+
+    # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     def test_bad_property_in_top_level(self):
         with self.assertRaisesRegex(ValueError, "invalid property: 'foobar'"):

@@ -160,8 +160,8 @@ def print_config(config: Configuration):
 
 
 def read_config(file, src_dir):
-    json_string = _read_config_json(file, src_dir)
-    return Configuration(json_string, src_dir)
+    config_dict = _read_config_json(file, src_dir)
+    return Configuration(config_dict, src_dir)
 
 
 def check(condition, message):
