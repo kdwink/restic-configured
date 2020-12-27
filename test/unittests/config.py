@@ -11,23 +11,23 @@ class ConfigTest(unittest.TestCase):
 
     def test_restic_path_abs(self):
         c = read_config(f'{test_file_dir}/unit-test-001.json', test_file_dir)
-        self.assertEqual(c.restic_path, '../bin/restic-amd64')
-        self.assertEqual(c.restic_path_abs(), os.path.normpath(f'{test_file_dir}/../bin/restic-amd64'))
+        self.assertEqual('../bin/restic-amd64', c.restic_path)
+        self.assertEqual(os.path.normpath(f'{test_file_dir}/../bin/restic-amd64'), c.restic_path_abs())
 
     def test_restic_path_abs_with_abs_path_in_config_file(self):
         c = read_config(f'{test_file_dir}/unit-test-029.json', test_file_dir)
-        self.assertEqual(c.restic_path, '/root/bin/restic-amd64')
-        self.assertEqual(c.restic_path_abs(), '/root/bin/restic-amd64')
+        self.assertEqual('/root/bin/restic-amd64', c.restic_path)
+        self.assertEqual('/root/bin/restic-amd64', c.restic_path_abs())
 
     def test_log_directory_abs(self):
         c = read_config(f'{test_file_dir}/unit-test-001.json', test_file_dir)
         self.assertEqual('../logs/example-osx', c.log_directory)
-        self.assertEqual(c.log_directory_abs(), os.path.normpath(f'{test_file_dir}/../logs/example-osx'))
+        self.assertEqual(os.path.normpath(f'{test_file_dir}/../logs/example-osx'), c.log_directory_abs())
 
     def test_log_directory_abs_with_abs_path_in_config_file(self):
         c = read_config(f'{test_file_dir}/unit-test-030.json', test_file_dir)
         self.assertEqual('/home/user/bob/logs', c.log_directory)
-        self.assertEqual(c.log_directory_abs(), '/home/user/bob/logs')
+        self.assertEqual('/home/user/bob/logs', c.log_directory_abs())
 
     # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
