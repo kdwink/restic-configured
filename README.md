@@ -15,7 +15,7 @@ A python script that invokes restic ( https://github.com/restic/restic ).
 - [x] Make redirect of output optional command line arg.
 - [x] Validate config file. Assert required fields and error on unrecognized fields.
 - [x] Singe configuration file for: password, excludes, and backup dirs
-- [x] Forget settings are configurable per project in config json.
+- [x] Forget settings are configurable per project in configuration json.
 - [x] Ability to more easily execute arbitrary restic commands.
 
 
@@ -61,6 +61,6 @@ close to the repository, issues the prune command.
 
 * https://restic.readthedocs.io/en/latest/040_backup.html#excluding-files
 * Pattern is matched against entire file path.
-* Trailing / in pattern is ignored, leading / anchors pattern to root directory.
+* Trailing / in a pattern is ignored, leading / anchors pattern to root directory.
 * Pattern must match one or more complete file/directory components of path.
 * Single * wildcard does NOT match over directory separator
