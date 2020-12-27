@@ -21,8 +21,8 @@ printf "OLD_VER: %s \n" "${OLD_VER}"
 printf "NEW_VER: %s \n" "${NEW_VER}"
 printf "\n"
 
-sed -i '' "s/version=${OLD_VER}\$/version=${NEW_VER}/g" "${VERSION_FILE}"
-sed -i '' "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
+sed --in-place "s/version=${OLD_VER}\$/version=${NEW_VER}/g" "${VERSION_FILE}"
+sed --in-place "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
 
 
 #----------------------------------------------------------------
@@ -36,7 +36,13 @@ git push --tags origin HEAD
 #----------------------------------------------------------------
 # download the binary distribution of restic
 #----------------------------------------------------------------
+rm -rf bin/*
 ./download-restic-executable.sh
+
+#----------------------------------------------------------------
+# copy source into bin directory
+#----------------------------------------------------------------
+cp --preserve=all --recursive src/* bin
 
 #----------------------------------------------------------------
 # package src
@@ -49,8 +55,7 @@ fi
 
 TAR_FILE="restic-backup-v${NEW_VER}.tar"
 
-${TAR} --transform 's+^+restic-backup/+' --create --file "${TAR_FILE}" src
-${TAR} --transform 's+^+restic-backup/+' --append --file "${TAR_FILE}" config
-${TAR} --transform 's+^+restic-backup/+' --append --file "${TAR_FILE}" bin
+${TAR} --transform 's+^+restic/+' --append --file "${TAR_FILE}" config
+${TAR} --transform 's+^+restic/+' --append --file "${TAR_FILE}" bin
 
 printf "Created %s \n" "${TAR_FILE}"

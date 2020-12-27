@@ -26,13 +26,12 @@ Extracted contents of tar file will have this structure:
     restic-backup/
         config/
         bin/
-        src/
             backup.py
 ```
 
 Create a cron script that invokes backup.py like so:
 ```shell
-19 18 * * * /root/restic/src/backup.py --log ../config/dev.json backup-prune
+19 18 * * * /root/restic/bin/backup.py --log ../config/dev.json backup-prune
 ```
 
 
@@ -41,7 +40,13 @@ Create a cron script that invokes backup.py like so:
 On OSX it may be necessary to grant `/usr/sbin/cron` "Full Disk Access" permission.  Settings -> 
 Security & Privacy -> Full Disk Access.
 
-
+## Upgrade
+          
+```shell
+mv restic restic-old
+tar -xvf restic-backup-v15.tar
+```
+Then copy any necessary credentials from the old directory and delete it.
 
 # Configuration
 
