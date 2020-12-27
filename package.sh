@@ -10,7 +10,6 @@ trap 'exit' ERR
 #----------------------------------------------------------------
 # increment version
 #----------------------------------------------------------------
-
 VERSION_FILE="src/restic/version.txt"
 HASH=$(git rev-parse --short HEAD)
 
@@ -26,15 +25,18 @@ sed -i '' "s/version=${OLD_VER}\$/version=${NEW_VER}/g" "${VERSION_FILE}"
 sed -i '' "s/hash=.*\$/hash=$HASH/g" ${VERSION_FILE}
 
 
+#----------------------------------------------------------------
+# commit new version
+#----------------------------------------------------------------
 git commit --all --message "VERSION: ${NEW_VER}"
 git tag "v${NEW_VER}"
 git push --tags origin HEAD
+
 
 #----------------------------------------------------------------
 # download the binary distribution of restic
 #----------------------------------------------------------------
 ./download-restic-executable.sh
-
 
 #----------------------------------------------------------------
 # package src

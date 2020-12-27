@@ -5,8 +5,8 @@ A python script that invokes restic ( https://github.com/restic/restic ).
 
 # Features
 
-- [ ] Package restic executable with script deployable.
 - [ ] Ability to execute arbitrary command for other repos.
+- [x] Package restic executable with script deployable.
 - [x] Allow restic path to be configured.
 - [x] Packing for easy installation/upgrade on remote hosts.
 - [x] Give a better error message if configuration file does not exist.
