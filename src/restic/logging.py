@@ -42,7 +42,7 @@ def format_command(command_part_array):
     last_part = ""
     for part in command_part_array:
         new_len = length + len(part)
-        new_line = (part.startswith("--") and (new_len > 40)) or (new_len > 80)
+        new_line = (length > 0) and ((part.startswith("--") and (new_len > 40)) or (new_len > 80))
         if new_line:
             length = 0
             result = result + "\\\n\t"
