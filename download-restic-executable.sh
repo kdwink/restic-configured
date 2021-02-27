@@ -1,7 +1,7 @@
 # exit script on any error
 trap 'exit' ERR
 
-VERSION="0.11.0"
+VERSION="0.12.0"
 
 #https://github.com/restic/restic/releases/download/v0.11.0/restic_0.11.0_windows_amd64.zip
 
