@@ -29,6 +29,10 @@ Extracted contents of tar file will have this structure:
             backup.py
 ```
 
+Create a key pair for the host and add to authorized_keys on restic host:
+
+```ssh-keygen -t ed25519```
+
 Create a cron script that invokes backup.py like so:
 ```shell
 19 18 * * * /root/restic/bin/backup.py --log ../config/dev.json backup-prune
