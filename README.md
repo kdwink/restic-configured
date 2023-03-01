@@ -8,7 +8,7 @@ retention times, authentication credentials, log file location and rotation, and
 
 ``` backup.py [--help] [--log] [--version] config_file [sub_command ...]```
      
-**supported sup_commands**: backup, backup-prune, check, forget, init, ls, password, prune, restore, stats, snapshots, unlock
+**supported sub_commands**: backup, backup-prune, check, forget, init, ls, password, prune, restore, stats, snapshots, unlock
     
  
 # Example
