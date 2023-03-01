@@ -1,6 +1,6 @@
 # restic-configured
 
-A python script that invokes restic ( https://github.com/restic/restic ) with options (backup path, excludes,
+A python script that invokes [restic](https://github.com/restic/restic) with options (backup paths, exclude paths,
 retention times, authentication credentials, log file location and rotation, and more) from a configuration file.
 
      
