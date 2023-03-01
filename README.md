@@ -41,7 +41,7 @@ Extracted contents of tar file will have this structure:
     restic-backup/
         config/
         bin/
-            backup.py [option] [subcommand]
+            backup.py
 ```
 
 Create a key pair for the host and add to authorized_keys on restic host:
@@ -50,7 +50,7 @@ Create a key pair for the host and add to authorized_keys on restic host:
 
 Create a cron script that invokes backup.py like so:
 ```shell
-19 18 * * * /root/restic/bin/backup.py --log ../config/dev.json backup-prune
+19 18 * * * /root/restic/bin/backup.py --log ../config/my-config.json backup-prune
 ```
 
 
