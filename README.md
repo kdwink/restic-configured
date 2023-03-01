@@ -24,11 +24,10 @@ Example configuration files can be found in the config-examples directory.
 
 # Features
 
-- Packing for easy installation/upgrade on remote hosts.
 - Single configuration file for: multiple target paths, password, excludes, backup dirs, logs etc
 - Forget settings are configurable per project, or per path, in configuration json.
 - Auto cleanup/rotation of logs.
-- Package restic executable with script deployable.
+- Packaging for easy installation/upgrade on remote hosts.
 - Single execution from cron (does both backup and forget and/or prune)
 
 
