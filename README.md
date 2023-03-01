@@ -19,7 +19,7 @@ This will backup ALL paths configured in my-config.json using credentials (inclu
 in the configuration, then prune those paths according to the forget-policy configured for each. Logs will go
 to the configured location.
 
-Example configuration files can be found in the config subdirecty.
+Example configuration files can be found in the config-examples directory.
 
 
 # Features

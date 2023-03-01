@@ -1,0 +1,21 @@
+{
+  "repository": "sftp:restic@restic.example.com:restic-repos/docker",
+  "restic-path": "restic_0.14.0_linux_amd64",
+  "password": "repo-password-here",
+  "log-directory": "../logs/docker",
+  "log-retention-days": 90,
+  "forget-policy": ["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12", "--keep-yearly", "3"],
+  "prune-policy": 0.04,
+  "backup-commands": [
+    {
+      "command": ["docker", "exec", "--interactive", "otl-mysql", "mysqldump", "--databases", "todo"],
+      "repo-path": "/otl-backup.sql"
+    }
+  ],
+  "backup-paths": [
+    { "path": "/root",  "excludes": [ "/root/restic/logs" ] },
+    { "path": "/etc" },
+    { "path": "/var/spool",  "note": "cron tabs" },
+    { "path": "/var/lib/docker/volumes/otl-tomcat/_data" }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "repository": "sftp:restic@restic.example.com:restic-repos/xiujia-pc",
+  "restic-path": "../bin/restic_0.14.0_linux_amd64",
+  "password": "repo-password-here",
+  "log-directory": "../logs/my-pc",
+  "log-retention-days": 120,
+  "forget-policy": ["--keep-daily", "7", "--keep-weekly", "5", "--keep-monthly", "12", "--keep-yearly", "5"],
+  "prune-policy": 0.05,
+  "backup-paths": [
+    {
+      "path": "/mnt/c/apps/",
+      "excludes": []
+    },
+    {
+      "path": "/mnt/c/Users/Xiujia/",
+      "note": "",
+      "excludes": [
+        "AppData",
+        "Downloads",
+        "Favorites",
+        "Links",
+        "Searches",
+        ".m2/repository",
+        ".gradle",
+
+        "Documents/My Music",
+        "Documents/My Pictures",
+        "Documents/My Videos",
+        "Cookies",
+        "Application Data",
+        "Local Settings",
+        "My Documents",
+        "NetHood",
+        "PrintHood",
+        "Recent",
+        "SendTo",
+        "Start Menu",
+        "Templates",
+
+        "*.lnk",
+        "NTUSER.DAT*",
+        "ntuser.dat*",
+
+        "desktop.ini",
+        "ntuser.ini",
+        "Thumbs.db"
+      ]
+    }
+  ]
+}
